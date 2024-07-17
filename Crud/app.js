@@ -8,6 +8,7 @@ const documento = document.querySelector("#documento");
 const boton = document.querySelector("#politicas");
 const email = document.querySelector("#email");
 
+
 const validar = (event) => {
     event.preventDefault();
     if (nombre.value === "") {
@@ -40,10 +41,15 @@ const validar = (event) => {
         documento.focus();
         documento.classList.add("error");
     }
+    if(documento.value === ""){
+        documento.focus();
+        documento.classList.add("error");
+    }
     if(email.value === ""){
         email.focus();
         email.classList.add("error");
     }
+
 }
 
 const remover = (e, input) =>{
@@ -85,6 +91,7 @@ email.addEventListener("keypress",(event)=> {
 });
 
 
+
 documento.addEventListener("keypress", (event)=> {
     console.log(event);
     console.log(this.value);
@@ -121,12 +128,3 @@ apellido.addEventListener("keypress", (event)=>{
 });
 
 
-const validarcorreo =(event)=>{
-    let correo = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0- 9-]+\.[a-zA-Z0-9-.]+$/;
-    if (correo.test(event.value)) {
-        console.log("Si")
-        }else{
-            console.log("No")
-            }
-}
-email.addEventListener("keyup", validarcorreo);
