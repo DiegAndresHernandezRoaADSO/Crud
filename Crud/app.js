@@ -1,10 +1,12 @@
 const $formulario = document.querySelector('form');
 const nombre = document.querySelector("#nombre");
-const apellido = document.querySelector("#apellido")
-const telefono = document.querySelector("#telefono")
-const direccion = document.querySelector("#direccion")
-const tipo = document.querySelector("#tipo")
-const documento = document.querySelector("#documento")
+const apellido = document.querySelector("#apellido");
+const telefono = document.querySelector("#telefono");
+const direccion = document.querySelector("#direccion");
+const tipo = document.querySelector("#tipo");
+const documento = document.querySelector("#documento");
+const boton = document.querySelector("#politicas");
+const email = document.querySelector("#email");
 
 const validar = (event) => {
     event.preventDefault();
@@ -38,44 +40,93 @@ const validar = (event) => {
         documento.focus();
         documento.classList.add("error");
     }
-}
-
-
-
-const remover = (event, input) => {
-    if (input.value !== "") {
-        input.classList.remove("error");
-        input.classList.add("correcto");
+    if(email.value === ""){
+        email.focus();
+        email.classList.add("error");
     }
 }
 
-$formulario.addEventListener('submit', validar);
-
-nombre.addEventListener("keyup", (event) =>{
-    remover(event, nombre)
-})
-
-apellido.addEventListener("keyup", (event) =>{
-    remover(event, apellido)
-})
-telefono.addEventListener("keyup", (event) =>{
-    remover(event, telefono)
-})
-
-direccion.addEventListener("keyup", (event) =>{
-    remover(event, direccion)
-})
+const remover = (e, input) =>{
+    if (input.value != "") {
+        input.classList.remove("error");
+        input.classList.add("correcto")
+    }
+};
 
 
-tipo.addEventListener("change", (event) =>{
-    remover(event, tipo)
-})
-documento.addEventListener("keyup", (event) =>{
-    remover(event, documento)
-})
+$formulario.addEventListener('submit', validar)
 
-button.addEventListener("click", (event) => {
-    remover();
+nombre.addEventListener("keyup", (event)=> {
+    remover (event, nombre);
+});
+
+apellido.addEventListener("keyup", (event)=> {
+    remover (event, apellido);
+});
+
+telefono.addEventListener("keyup", (event)=> {
+    remover (event, telefono);
+});
+
+direccion.addEventListener("keyup", (event)=> {
+    remover (event, direccion);
+});
+
+tipo.addEventListener("change", (event)=> {
+    remover (event, tipo);
+});
+
+documento.addEventListener("keyup", (event)=> {
+    remover (event, documento);
+});
+
+email.addEventListener("keypress",(event)=> {
+    remover (event, email);
 });
 
 
+documento.addEventListener("keypress", (event)=> {
+    console.log(event);
+    console.log(this.value);
+});
+
+
+const SoloNumeros = function(event){
+    if (event.keyCode < 48 || event.keyCode > 57)
+        event.preventDefault();
+}
+
+const SoloLetras = (event, elemento)=>{
+    let letras = /^[a-zA-ZÀ-ÿ\s]+$/;
+    if (letras.test(event.key)) {
+        console.log("Si")
+    }else{
+
+        event.preventDefault();
+    }
+};
+// documento.addEventListener("keypress", function (event) {
+//     console.log(event.keyCode);
+//     if (event.keyCode >= 48 != event.keyCode <= 57) {
+//         event.preventDefault();
+//     };
+// });
+documento.addEventListener("keypress", SoloNumeros);
+telefono.addEventListener("keypress", SoloNumeros);
+nombre.addEventListener("keypress", (event)=>{
+    SoloLetras(event, nombre)
+});
+apellido.addEventListener("keypress", (event)=>{
+    SoloLetras(event, apellido)
+});
+
+
+const validarcorreo =(event)=>{
+    let correo = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0- 9-]+\.[a-zA-Z0-9-.]+$/;
+    if (correo.test(event.value)) {
+        console.log("Si")
+        }else{
+            console.log("No")
+            }
+}
+email.addEventListener("keyup", validarcorreo);
