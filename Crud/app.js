@@ -1,3 +1,5 @@
+import isEmail from "./module.js";
+
 const $formulario = document.querySelector('form');
 const nombre = document.querySelector("#nombre");
 const apellido = document.querySelector("#apellido");
@@ -5,9 +7,9 @@ const telefono = document.querySelector("#telefono");
 const direccion = document.querySelector("#direccion");
 const tipo = document.querySelector("#tipo");
 const documento = document.querySelector("#documento");
-const boton = document.querySelector("#politicas");
+const politicas = document.querySelector("#politicas");
 const email = document.querySelector("#email");
-
+const button = document.querySelector("button");
 
 const validar = (event) => {
     event.preventDefault();
@@ -41,26 +43,17 @@ const validar = (event) => {
         documento.focus();
         documento.classList.add("error");
     }
-    if(documento.value === ""){
-        documento.focus();
-        documento.classList.add("error");
-    }
-    if(email.value === ""){
-        email.focus();
-        email.classList.add("error");
-    }
-
 }
 
 const remover = (e, input) =>{
     if (input.value != "") {
         input.classList.remove("error");
         input.classList.add("correcto")
-    }
+    };
 };
 
 
-$formulario.addEventListener('submit', validar)
+$formulario.addEventListener('submit', validar);
 
 nombre.addEventListener("keyup", (event)=> {
     remover (event, nombre);
@@ -86,11 +79,23 @@ documento.addEventListener("keyup", (event)=> {
     remover (event, documento);
 });
 
-email.addEventListener("keypress",(event)=> {
-    remover (event, email);
+email.addEventListener("keyup", (event)=> {
+    isEmail(event, email);
 });
 
+addEventListener("DOMContentLoaded", (event)=>{
+    if(!politicas.checked){
+        console.log(button);
+        button.setAttribute("disabled", "");
+    };
+});
 
+politicas.addEventListener("change", (event)=>{
+    console.log(event.target.checked);
+    if (event.target.checked) {
+        button.removeAttribute("disabled")
+    }
+});
 
 documento.addEventListener("keypress", (event)=> {
     console.log(event);
@@ -107,24 +112,58 @@ const SoloLetras = (event, elemento)=>{
     let letras = /^[a-zA-ZÀ-ÿ\s]+$/;
     if (letras.test(event.key)) {
         console.log("Si")
-    }else{
-
+    }
+    else{
+        console.log("No")
         event.preventDefault();
     }
 };
+
+
+
+let expresion = /^[\w-._]+@[\w-._]+(\.[a-zA-Z]{2,4}){1,2}$/;
+
+console.log(expresion,elemento.value);
+console.log(expresion.test(elemento.value));
+if(expresion.test(elemento.value)){
+    elemento.classList.remove("error")
+    elemento.classList.add("correcto")
+}else{
+    elemento.classList.remove("correcto")
+    elemento.classList.add("error")
+}
+
+
+
 // documento.addEventListener("keypress", function (event) {
 //     console.log(event.keyCode);
 //     if (event.keyCode >= 48 != event.keyCode <= 57) {
 //         event.preventDefault();
 //     };
 // });
+
+
+
 documento.addEventListener("keypress", SoloNumeros);
+
 telefono.addEventListener("keypress", SoloNumeros);
+
 nombre.addEventListener("keypress", (event)=>{
     SoloLetras(event, nombre)
 });
+
 apellido.addEventListener("keypress", (event)=>{
     SoloLetras(event, apellido)
 });
+
+email.addEventListener("keypress", (event)=>{
+    ValidarCorreo(event, email)
+});
+
+
+
+import isEmail from "./module";
+import ValidarCorreo from `./module.js`
+
 
 

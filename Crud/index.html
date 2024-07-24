@@ -7,39 +7,32 @@
     <title>CRUD</title>
 </head>
 <body>
-    <form action="/submit-form" method="post">
-        <label for="nombre">Nombre</label>
-        <input type="text" id="nombre" name="nombre" autocomplete="off">
-        
-        <label for="apellido">Apellido</label>
-        <input type="text" id="apellido" name="apellido" autocomplete="off">
-        
-        <label for="telefono">Teléfono</label>
-        <input type="number" id="telefono" name="telefono" autocomplete="off">
-        
-        <label for="direccion">Dirección</label>
-        <input type="text" id="direccion" name="direccion" autocomplete="off">
-        
-        <label for="tipo">Tipo de documento</label>
-        <select name="tipo" id="tipo">
-            <option value="">Seleccionar</option>
-            <option value="cc">Cédula</option>
-            <option value="ti">Tarjeta identidad</option>
-        </select>
-        
-        <label for="documento">Documento</label>
-        <input type="number" id="documento" name="documento" autocomplete="off">
+        <form class="form" novalidate>
+                <label for="nombre">Nombre</label>
+                <input type="text" id="nombre" autocomplete="off">
+                <label for="apellido">Apellido</label>
+                <input type="text" id="apellido" autocomplete="off">
+                <label for="telefono">Telefono</label>
+                <input type="text" id="telefono" autocomplete="off">
+                <label for="direccion">Dirección</label>
+                <input type="text" id="direccion" autocomplete="off">
+                <label for="tipo">Tipo de documento</label>
+                <select name="tipo" id="tipo">
+                    <option value="">Seleccionar</option>
+                    <option value="1">Cedula</option>
+                    <option value="2">Tarjeta identidad</option>
+                </select>
+                <label for="documento">Documento</label>
+                <input type="text" id="documento" autocomplete="off">
+                <div>
+                    <input type="checkbox" id="politicas">
+                    <label for="politicas" id="politicas">Acepta politicas</label>
+                </div>
+                <label for="email">Email</label>
+                <input type="text" id="email" autocomplete="off">
+                <button type="submit" >Enviar</button>
+            </form>
 
-        <label for="correo">Correo</label>
-        <input type="email" id="email" name="email" autocomplete="off">
-
-        <div class="checkbox-container">
-            <input type="checkbox" id="politicas" name="politicas">
-            <label for="politicas">Aceptas las políticas de uso</label>
-        </div>
-        
-        <button type="submit" id="button">Enviar</button>
-    </form>
-    <script src="./app.js"></script>
+            <script src="./app.js"></script>
 </body>
 </html>
