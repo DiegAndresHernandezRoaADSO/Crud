@@ -79,7 +79,7 @@ documento.addEventListener("keyup", (event)=> {
     remover (event, documento);
 });
 
-email.addEventListener("keyup", (event)=> {
+email.addEventListener("blur", (event)=> {
     isEmail(event, email);
 });
 
@@ -120,21 +120,6 @@ const SoloLetras = (event, elemento)=>{
 };
 
 
-
-let expresion = /^[\w-._]+@[\w-._]+(\.[a-zA-Z]{2,4}){1,2}$/;
-
-console.log(expresion,elemento.value);
-console.log(expresion.test(elemento.value));
-if(expresion.test(elemento.value)){
-    elemento.classList.remove("error")
-    elemento.classList.add("correcto")
-}else{
-    elemento.classList.remove("correcto")
-    elemento.classList.add("error")
-}
-
-
-
 // documento.addEventListener("keypress", function (event) {
 //     console.log(event.keyCode);
 //     if (event.keyCode >= 48 != event.keyCode <= 57) {
@@ -156,14 +141,12 @@ apellido.addEventListener("keypress", (event)=>{
     SoloLetras(event, apellido)
 });
 
-email.addEventListener("keypress", (event)=>{
-    ValidarCorreo(event, email)
+email.addEventListener("blur", (event)=>{
+    isEmail(event, email)
 });
 
 
 
-import isEmail from "./module";
-import ValidarCorreo from `./module.js`
 
 
 
