@@ -5,7 +5,7 @@ import isEmail from "./module.js";
 import solonumeros from "./module2.js";
 
 // solo letras
-import { letras } from "./module3.js";
+import { SoloLetras } from "./module3.js";
 
 const $formulario = document.querySelector('form');
 const nombre = document.querySelector("#nombre");
@@ -20,34 +20,34 @@ const button = document.querySelector("button");
 
 const validar = (event) => {
     event.preventDefault();
-    if (nombre.value === "") {
-        nombre.focus();
-        nombre.classList.add("error");
-    }
-    if (apellido.value === "") {
-        apellido.focus();
-        apellido.classList.add("error");
-    }
-    if (telefono.value === "") {
-        telefono.focus();
-        telefono.classList.add("error");
-    }
-    if (direccion.value === "") {
-        direccion.focus();
-        direccion.classList.add("error");
-    }
-    if (tipo.value === "") {
-        tipo.focus();
-        tipo.classList.add("error");
-    }
-    if (documento.value === "") {
-        documento.focus();
-        documento.classList.add("error");
-    }
-    if (email.value === "") {
-        email.focus();
-        email.classList.add("error");
-    }
+    // if (nombre.value === "") {
+    //     nombre.focus();
+    //     nombre.classList.add("error");
+    // }
+    // if (apellido.value === "") {
+    //     apellido.focus();
+    //     apellido.classList.add("error");
+    // }
+    // if (telefono.value === "") {
+    //     telefono.focus();
+    //     telefono.classList.add("error");
+    // }
+    // if (direccion.value === "") {
+    //     direccion.focus();
+    //     direccion.classList.add("error");
+    // }
+    // if (tipo.value === "") {
+    //     tipo.focus();
+    //     tipo.classList.add("error");
+    // }
+    // if (documento.value === "") {
+    //     documento.focus();
+    //     documento.classList.add("error");
+    // }
+    // if (email.value === "") {
+    //     email.focus();
+    //     email.classList.add("error");
+    // }
 }
 
 const remover = (e, input) => {
@@ -110,15 +110,7 @@ const SoloNumeros = function(event) {
     }
 }
 
-const SoloLetras = (event, elemento) => {
-    let letras = /^[a-zA-ZÀ-ÿ\s]+$/;
-    if (letras.test(event.key)) {
-        console.log("Sí");
-    } else {
-        console.log("No");
-        event.preventDefault();
-    }
-};
+
 
 documento.addEventListener("keypress", SoloNumeros);
 
@@ -135,6 +127,7 @@ apellido.addEventListener("keypress", (event) => {
 email.addEventListener("blur", (event) => {
     isEmail(event, email);
 });
+
 
 
 
