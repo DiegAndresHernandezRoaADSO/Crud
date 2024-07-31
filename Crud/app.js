@@ -1,4 +1,5 @@
 // email
+import isvalid from "./isvalid.js";
 import isEmail from "./module.js";
 
 // solo numeros
@@ -18,37 +19,30 @@ const politicas = document.querySelector("#politicas");
 const email = document.querySelector("#email");
 const button = document.querySelector("button");
 
-const validar = (event) => {
-    event.preventDefault();
-    // if (nombre.value === "") {
-    //     nombre.focus();
-    //     nombre.classList.add("error");
-    // }
-    // if (apellido.value === "") {
-    //     apellido.focus();
-    //     apellido.classList.add("error");
-    // }
-    // if (telefono.value === "") {
-    //     telefono.focus();
-    //     telefono.classList.add("error");
-    // }
-    // if (direccion.value === "") {
-    //     direccion.focus();
-    //     direccion.classList.add("error");
-    // }
-    // if (tipo.value === "") {
-    //     tipo.focus();
-    //     tipo.classList.add("error");
-    // }
-    // if (documento.value === "") {
-    //     documento.focus();
-    //     documento.classList.add("error");
-    // }
-    // if (email.value === "") {
-    //     email.focus();
-    //     email.classList.add("error");
-    // }
-}
+
+
+$formulario.addEventListener("submit", (event)=>{
+    let response = isvalid(event, "from[required]");
+    const data ={
+        first_name: nombre.value,
+        last_name: apellido.value,
+        address:direccion.value,
+        type_id: tipo.value,
+        email: email.value,
+        phone:telefono.value,
+        document:documento.value
+    }
+    if (response) {
+        fetch('http://localhost:3000/user',{
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: {
+            'Content-type': 'application/json; charset=UTF-8',
+        },
+    });
+    }
+})
+
 
 const remover = (e, input) => {
     if (input.value !== "") {
@@ -60,7 +54,9 @@ const remover = (e, input) => {
     }
 };
 
-$formulario.addEventListener('submit', validar);
+$formulario.addEventListener('submit', (event =>{
+    isvalid(event, "form > [required] ");
+}));
 
 nombre.addEventListener("keyup", (event) => {
     remover(event, nombre);
@@ -86,9 +82,11 @@ documento.addEventListener("keyup", (event) => {
     remover(event, documento);
 });
 
-email.addEventListener("blur", (event) => {
-    isEmail(event, email);
+email.addEventListener("keypress", (event) => {
+    remover (event, email);
 });
+
+
 
 document.addEventListener("DOMContentLoaded", (event) => {
     if (!politicas.checked) {
@@ -104,11 +102,14 @@ politicas.addEventListener("change", (event) => {
     }
 });
 
+
+
+
 const SoloNumeros = function(event) {
     if (event.keyCode < 48 || event.keyCode > 57) {
         event.preventDefault();
     }
-}
+};
 
 
 
@@ -127,11 +128,3 @@ apellido.addEventListener("keypress", (event) => {
 email.addEventListener("blur", (event) => {
     isEmail(event, email);
 });
-
-
-
-
-
-
-
-

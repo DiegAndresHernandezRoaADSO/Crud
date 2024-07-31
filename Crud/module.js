@@ -4,12 +4,17 @@ const isEmail = (event, elemento) => {
     console.log(expresion, elemento.value);
     console.log(expresion.test(elemento.value));
     if (expresion.test(elemento.value)) {
+        console.log("si");
         elemento.classList.remove("error");
         elemento.classList.add("correcto");
     } else {
+        console.log("no");
         elemento.classList.remove("correcto");
         elemento.classList.add("error");
     }
 };
 
 export default isEmail;
+
+
+
