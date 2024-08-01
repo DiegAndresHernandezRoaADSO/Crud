@@ -14,15 +14,6 @@ const isvalid = (event, form)=>{
         
     })
     return bandera;
-    
-    if(bandera){
-        alert("datos guardados");
-    }
-    else{
-        alert("formulario vacio");
-    }
-
-    
 }
 
 export default isvalid;

@@ -1,4 +1,4 @@
- export const validar = (event) => {
+const validar = (event) => {
     event.preventDefault();
      if (nombre.value === "") {
          nombre.focus();

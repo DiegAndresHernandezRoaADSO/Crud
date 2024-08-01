@@ -43,10 +43,10 @@ label{
 }
 
 .error{
-    border:  solid 2px red;
+    border:  solid 2px rgb(207, 0, 0);
 }
 
 
 .correcto{
-    border: solid 2px rgb(0, 255, 0);
+    border: solid 2px rgb(2, 221, 71);
 } 

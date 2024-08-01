@@ -1,12 +1,9 @@
-// email
 import isvalid from "./isvalid.js";
 import isEmail from "./module.js";
-
-// solo numeros
-import solonumeros from "./module2.js";
-
-// solo letras
-import { SoloLetras } from "./module3.js";
+import SoloNumeros from "./module2.js";
+import SoloLetras  from "./module3.js";
+import remover from "./remover.js"
+import solicitud from "./ajax.js";
 
 const $formulario = document.querySelector('form');
 const nombre = document.querySelector("#nombre");
@@ -20,6 +17,27 @@ const email = document.querySelector("#email");
 const button = document.querySelector("button");
 
 
+const documentos = () =>{
+    const fragmento = document.createDocumentFragment();
+    fetch('https://jsonplaceholder.typicode.com/posts')
+    .then((response) => response.json())
+    .then((json) => console.log(json));
+    data.array.forEach(element => {
+        console.log(element);
+        let option = document.createComment("option");
+        option.value = element.id;
+        option.textContent = element.name
+        fragmento.appendChild(option)
+    });
+    tipo.appendChild(fragmento)
+}
+
+const listar = () =>{
+    fetch('')
+    .then((response) => response.json())
+    .then((json) => console.log(json));
+
+}
 
 $formulario.addEventListener("submit", (event)=>{
     let response = isvalid(event, "from[required]");
@@ -39,20 +57,14 @@ $formulario.addEventListener("submit", (event)=>{
         headers: {
             'Content-type': 'application/json; charset=UTF-8',
         },
-    });
+    })
+    .then((response)=>{response.json})
+    .then((json)=>{
+        //codigo
+        nombre.value = "" ;
+    })
     }
 })
-
-
-const remover = (e, input) => {
-    if (input.value !== "") {
-        input.classList.remove("error");
-        input.classList.add("correcto");
-    } else {
-        input.classList.remove("correcto");
-        input.classList.add("error");
-    }
-};
 
 $formulario.addEventListener('submit', (event =>{
     isvalid(event, "form > [required] ");
@@ -101,16 +113,6 @@ politicas.addEventListener("change", (event) => {
         button.setAttribute("disabled", "");
     }
 });
-
-
-
-
-const SoloNumeros = function(event) {
-    if (event.keyCode < 48 || event.keyCode > 57) {
-        event.preventDefault();
-    }
-};
-
 
 
 documento.addEventListener("keypress", SoloNumeros);

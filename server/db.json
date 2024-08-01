@@ -1,5 +1,14 @@
 {
   "user": [
-    
+    {
+      "id": "5f14",
+      "first_name": "diego",
+      "last_name": "hernandez",
+      "address": "piedecuesta",
+      "type_id": "1",
+      "email": "ho@gmail.com",
+      "phone": "12345",
+      "document": "1234"
+    }
   ]
 }
