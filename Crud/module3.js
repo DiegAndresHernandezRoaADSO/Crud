@@ -4,11 +4,12 @@ const SoloLetras = (event, elemento) => {
         console.log("Sí");
     } else {
         console.log("No");
-        event.preventDefault();
+        event.preventDefault(); // Previene que caracteres no permitidos sean ingresados
     }
 };
 
 export default SoloLetras;
+
 
 
 

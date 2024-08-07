@@ -1,7 +1,8 @@
-const dom =document;
-const letters =(event)=>{
+const letters = (event) => {
     let letras = /^[a-zA-ZÀ-ÿ\s]+$/;
-    if(letras.test(event.key)) event.prevenDefault();
-}
+    if (!letras.test(event.key)) {
+        event.preventDefault(); // Corrige el error de typo
+    }
+};
 
 export default letters;

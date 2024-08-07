@@ -8,5 +8,4 @@ const remover = (e, input) => {
     }
 };
 
-
 export default remover;
