@@ -1,3 +1,4 @@
+import solicitud from "../Crud/ajax.js";
 import isvalid from "../Crud/isvalid.js";
 import SoloLetras from "../Crud/module3.js";
 import remover from "../Crud/remover.js";
@@ -18,6 +19,7 @@ nombre.addEventListener("keypress", (event) =>{
     SoloLetras(event, nombre)
 })
 
+
 $formulario.addEventListener("submit", (event)=>{
     let response = isvalid(event, "from[required]");
     const data ={
@@ -33,11 +35,13 @@ $formulario.addEventListener("submit", (event)=>{
     })
     .then((response) => response.json())
     .then(json =>{
-        nombre.value = "" ;
+        nombre.value = " " ;
         Button.removeAtribute("disabled")
     })
 }
 });
+
+
 
 
 

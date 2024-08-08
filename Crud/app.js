@@ -4,6 +4,7 @@ import SoloNumeros from "./module2.js";
 import SoloLetras  from "./module3.js";
 import remover from "./remover.js"
 import solicitud from "./ajax.js";
+import { URL } from "./config.js";
 
 const $formulario = document.querySelector('form');
 const nombre = document.querySelector("#nombre");
@@ -15,29 +16,76 @@ const documento = document.querySelector("#documento");
 const politicas = document.querySelector("#politicas");
 const email = document.querySelector("#email");
 const button = document.querySelector("button");
+const tbusers = document.querySelector("#tbusers");
+const fragmento = document.createDocumentFragment("");
+const tbody = document.querySelector("tbody");
+console.log(tbody);
 
 
-const documentos = () =>{
-    const fragmento = document.createDocumentFragment();
-    fetch('https://jsonplaceholder.typicode.com/posts')
+
+const documentos = () => {
+    const fracmento = document.createDocumentFragment();
+    fetch('http://localhost:3000/documento')
     .then((response) => response.json())
-    .then((json) => console.log(json));
-    data.array.forEach(element => {
-        console.log(element);
-        let option = document.createComment("option");
-        option.value = element.id;
-        option.textContent = element.name
-        fragmento.appendChild(option)
+    .then((data) => {
+        let option = document.createElement('option');
+        option.textContent = 'seleccione ...';
+        option.value = ''
+        fracmento.appendChild(option);
+            data.forEach(element =>{
+            let option = document.createElement('option');
+            option.value = element.id;
+            option.textContent = element.name
+            fracmento.appendChild(option);
+        });
+        tipo_Documento.appendChild(fragmento);
     });
-    tipo.appendChild(fragmento)
 }
 
-const listar = () =>{
-    fetch('')
-    .then((response) => response.json())
-    .then((json) => console.log(json));
 
+
+const listar = async () =>{
+    const data = await solicitud("users");
+    data.forEach(element =>{
+        tbusers.querySelector(".nombre").textContent = element.first_name;
+        tbusers.querySelector(".apellido").textContent = element.last_name;
+        tbusers.querySelector(".direccion").textContent = element.address;
+        tbusers.querySelector(".tipo").textContent = element.tipo;
+        tbusers.querySelector(".email").textContent = element.email;
+        tbusers.querySelector(".phone").querySelector = element.phone;
+        tbusers.querySelector(".documento").querySelector = element.document;
+
+        const clone = document.importNode(tbusers, true);
+        fragmento.appendChild(clone);
+    })
+
+    tbody.appendChild(fragmento);
 }
+
+ const createRow = (data) =>{
+    const tr = tbody.insertRow(-1);
+
+    const tdNombre = tr.insertCell(0);
+    const tdApellido = tr.insertCell(1);
+    const tdtelefono = tr.insertCell(2);
+    const tdDireccion = tr.insertCell(3)
+ }
+
+document.addEventListener("DOMContentLoaded", (event) => {
+    listar();
+    documentos();
+    if (!politicas.checked) {
+        button.setAttribute("disabled", "");
+    }
+});
+
+politicas.addEventListener("change", (event) => {
+    if (event.target.checked) {
+        button.removeAttribute("disabled");
+    } else {
+        button.setAttribute("disabled", "");
+    }
+});
 
 $formulario.addEventListener("submit", (event)=>{
     let response = isvalid(event, "from[required]");
@@ -61,7 +109,7 @@ $formulario.addEventListener("submit", (event)=>{
     .then((response)=>{response.json})
     .then((json)=>{
         //codigo
-        nombre.value = "" ;
+        nombre.value = " " ;
     })
     }
 })
@@ -100,21 +148,6 @@ email.addEventListener("keypress", (event) => {
 
 
 
-document.addEventListener("DOMContentLoaded", (event) => {
-    if (!politicas.checked) {
-        button.setAttribute("disabled", "");
-    }
-});
-
-politicas.addEventListener("change", (event) => {
-    if (event.target.checked) {
-        button.removeAttribute("disabled");
-    } else {
-        button.setAttribute("disabled", "");
-    }
-});
-
-
 documento.addEventListener("keypress", SoloNumeros);
 
 telefono.addEventListener("keypress", SoloNumeros);
@@ -130,3 +163,9 @@ apellido.addEventListener("keypress", (event) => {
 email.addEventListener("blur", (event) => {
     isEmail(event, email);
 });
+
+
+
+
+
+

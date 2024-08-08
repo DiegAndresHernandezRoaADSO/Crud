@@ -3,11 +3,40 @@
     padding: 0;
     box-sizing: border-box;
 }
+.container{
+    max-width: 1600px;
+    margin: 0 top; 
+}
 
+.mt-40{
+    margin-top: 40px;
+}
+.mb-40{
+    margin-bottom: 40px;
+}
+
+/* --------------------- Layout -------------------- */
+
+.layout{
+    display: grid;
+    grid-template-columns: "form table";
+    grid-template-columns: 400px 1fr;
+    gap: 1rem;
+}
+
+.form{}
+
+.table{ 
+    
+}
+
+
+
+/* --------------------- Layout -------------------- */
 
 form {
-    max-width: 450px;
-    width: 450px;
+    
+    width: 100%;
     margin: 0 auto;
     background-color: #df7171;
     display: flex;
@@ -16,7 +45,9 @@ form {
     gap: 14px;
     border-radius: 12px;
     display: flex;
+
 }
+
 
 
 input, select, button{

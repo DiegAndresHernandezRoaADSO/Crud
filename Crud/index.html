@@ -7,40 +7,71 @@
     <title>CRUD</title>
 </head>
 <body>
-    <form class="form" novalidate>
-        <label for="nombre">Nombre</label>
-        <input type="text" id="nombre" autocomplete="off" required>
-        
-        <label for="apellido">Apellido</label>
-        <input type="text" id="apellido" autocomplete="off" required>
-        
-        <label for="telefono">Teléfono</label>
-        <input type="text" id="telefono" autocomplete="off" required>
-        
-        <label for="direccion">Dirección</label>
-        <input type="text" id="direccion" autocomplete="off" required>
-        
-        <label for="tipo">Tipo de documento</label>
-        <select name="tipo" id="tipo" required>
-            <option value="">Seleccionar</option>
-            <option value="1">Cédula</option>
-            <option value="2">Tarjeta de identidad</option>
-        </select>
-        
-        <label for="documento">Documento</label>
-        <input type="text" id="documento" autocomplete="off" required>
-        
-        <div>
-            <input type="checkbox" id="politicas" required>
-            <label for="politicas">Acepta políticas</label>
+    <div class="container layout mt-40 mb-40">
+        <form class="form" novalidate>
+            <label for="nombre">Nombre</label>
+            <input type="text" id="nombre" autocomplete="off" required>
+            
+            <label for="apellido">Apellido</label>
+            <input type="text" id="apellido" autocomplete="off" required>
+            
+            <label for="telefono">Teléfono</label>
+            <input type="text" id="telefono" autocomplete="off" required>
+            
+            <label for="direccion">Dirección</label>
+            <input type="text" id="direccion" autocomplete="off" required>
+            
+            <label for="tipo">Tipo de documento</label>
+            <select name="tipo" id="tipo" required>
+            </select>
+            
+            <label for="documento">Documento</label>
+            <input type="text" id="documento" autocomplete="off" required>
+            
+            <div>
+                <input type="checkbox" id="politicas" required>
+                <label for="politicas">Acepta políticas</label>
+            </div>
+            
+            <label for="email">Email</label>
+            <input type="email" id="email" autocomplete="off" required>
+            
+            <button type="submit">Enviar</button>
+        </form>
+
+        <div class="tabla">
+            <table>
+                <th style="gap: 20px;">Nombre</th>
+                <th>Apellido</th>
+                <th>Teléfono</th>
+                <th>Dirección</th>
+                <th>Tipo de documento </th>
+                <th>Documento</th>
+                <th>Email</th>
+            </table>
+            <tbody>
+                
+            </tbody>
         </div>
-        
-        <label for="email">Email</label>
-        <input type="email" id="email" autocomplete="off" required>
-        
-        <button type="submit">Enviar</button>
-    </form>
-    
+</div>
+
+<template id="tb_users">
+    <tr>
+        <td class="nombre"></td>
+        <td class="apellido"></td>
+        <td class="telefono"></td>
+        <td class="direccion"></td>
+        <td class="tipo"></td>
+        <td class="documento"></td>
+        <td class="email"></td>
+    </tr>
+</template>
+
+
+
+
     <script src="./app.js" type="module"></script>
 </body>
 </html>
+
+
