@@ -1,9 +1,9 @@
-export  const URL = `http://localhost:3000/user`;
+import { URL } from "./config.js";
 
-const solicitud = async (url) =>{
-    let solicitud = await fetch(`${URL}/${url}`);
-    let data = await solicitud.json();
-    return data;
+const solicitud = async () => {
+    let solicitar = await fetch(`${URL}/users`);
+    let respuesta = await solicitar.json()
+    return respuesta;
 }
 
-export default solicitud
+export default solicitud;

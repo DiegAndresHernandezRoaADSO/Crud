@@ -1,114 +1,118 @@
-/* Reinicio de márgenes y rellenos para todos los elementos */
+/* Estilos globales */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-/* Contenedor principal con ancho máximo y centrado */
+/* Contenedor principal */
 .contenedor_principal {
-    max-width: 1600px;
+    max-width: 1200px;
     margin: 0 auto;
 }
 
-/* Espaciado superior de 40px */
+/* Espaciado superior e inferior */
 .mt-40 {
     margin-top: 40px;
 }
 
-/* Espaciado inferior de 40px */
 .mb-40 {
     margin-bottom: 40px;
 }
 
-/* Diseño de cuadrícula para la disposición del formulario y otros elementos */
+/* Diseño de cuadrícula para el formulario y contenido adicional */
 .layout {
     display: grid;
     grid-template-areas: "form grid-container";
-    grid-template-columns: 400px 1fr; /* Columna fija de 400px y otra autoajustable */
-    gap: 1rem; /* Espacio entre elementos */
+    grid-template-columns: 1fr 2fr; /* Ajusta el ancho de columnas */
+    gap: 2rem; /* Espacio entre columnas */
 }
 
-/* Estilos para la tabla */
+/* Estilos para tablas */
 table {
     width: 100%;
-    border-collapse: collapse; /* Combina los bordes de la tabla */
+    border-collapse: collapse;
 }
 
-/* Estilos para celdas de tabla */
 th, td {
-    border: 2px solid #f74780;
-    padding: 12px; /* Aumenta el padding para mayor espacio interno */
-    text-align: center;
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: left;
 }
 
-/* Fondo y estilo de encabezados de tabla */
 th {
-    background-color: #ffb3c6;
+    background-color: #f8f9fa;
+    color: #333;
 }
 
 /* Estilos para el formulario */
 form {
-    background-color: #ffb3c6;
-    border: 5px solid #f74780;
+    background-color: #ffffff;
+    border: 2px solid #ddd;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     display: flex;
     flex-direction: column;
-    padding: 30px;
-    gap: 16px; /* Aumenta el espacio entre elementos del formulario */
-    border-radius: 12px; /* Aumenta el radio de borde para esquinas más redondeadas */
+    gap: 20px;
 }
 
-/* Estilos generales para inputs, selects y botones */
+/* Estilos para campos de entrada y botones */
 input, select, button {
-    padding: 14px; /* Aumenta el padding para mayor confort en la interacción */
-    border: 2px solid #f74780;
-    border-radius: 8px;
-    outline: none; 
+    padding: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    outline: none;
+    font-size: 16px;
 }
 
-/* Estilos específicos para botones */
+/* Estilos para botones */
 button {
-    margin-top: 20px; /* Reduce el margen superior para una alineación más compacta */
-    background-color: #ff8fab;
-    color: white;
+    background-color: #007bff;
+    color: #fff;
     cursor: pointer;
-    transition: background-color 0.3s, color 0.3s; /* Añade transición suave para hover */
+    transition: background-color 0.3s, transform 0.3s;
+    border: none;
 }
 
-/* Efecto hover para botones */
 button:hover {
-    background-color: #fb6f92;
-    color: white;
+    background-color: #0056b3;
+    transform: scale(1.02);
+}
+
+button:disabled {
+    cursor: not-allowed;
+    background-color: #b0bec5;
+    opacity: 0.7;
 }
 
 /* Estilos para etiquetas */
 label {
-    color: #000000;
-    font-size: 18px; /* Aumenta el tamaño de fuente para mejor legibilidad */
+    color: #333;
+    font-size: 16px;
+    font-weight: 500;
 }
 
-/* Estilo para inputs con error */
+/* Estilos para inputs con estados */
 .error {
-    border: 2px solid #bd0003;
+    border-color: #dc3545;
 }
 
-/* Estilo para inputs correctos */
 .correcto {
-    border: 2px solid #5ccb5f;
+    border-color: #28a745;
 }
 
 /* Mensajes de error */
 .error-message {
-    color: #bd0003;
-    font-size: 14px; /* Ajusta el tamaño del texto del mensaje de error */
+    color: #dc3545;
+    font-size: 14px;
 }
 
-/* Estilos para el contenedor de checkbox y botones */
+/* Estilos para contenedor de checkbox */
 .button__checkbox {
     display: flex;
-    justify-content: center;
     align-items: center;
-    gap: 12px; /* Aumenta el espacio entre elementos */
+    gap: 12px;
     margin-top: 20px;
 }
 

@@ -8,7 +8,7 @@ const is_valid = (event, form) => {
   elementos.forEach(elemento => {
     if (elemento.type === "email") {
       // Validar el campo de correo electrónico
-      correoelectronico(event, elemento);
+      isEmail(event, elemento);
       
       // Comprobar si el campo tiene la clase 'error'
       if (elemento.classList.contains("error")) {

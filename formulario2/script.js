@@ -1,6 +1,6 @@
-import { sololetras } from "./modulos/modulos_letras.js";
-import is_valid from "./modulos/modulo_valid.js";
-import { remover } from "./modulos/modulo_validaciones.js";
+import SoloLetras from "../Crud/module3.js";
+import is_valid from "../Crud/isvalid.js";
+import remover from "../Crud/remover.js";
 
 const $formulario = document.querySelector("form");
 const nombre = document.querySelector("#nombre");
@@ -9,7 +9,7 @@ const boton = document.querySelector("#boton");
 
 // Validación del nombre 
 nombre.addEventListener("keypress", (event) => {
-    sololetras(event, nombre);
+  SoloLetras(event, nombre);
 });
 
 $formulario.addEventListener("submit", (event) => {

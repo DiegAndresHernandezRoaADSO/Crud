@@ -1,12 +1,12 @@
 // importanciones
 
-import { correoelectronico } from "./modulos/modulo_correo.js";
-import { sololetras } from "./modulos/modulos_letras.js";
-import { solonumeros } from "./modulos/modulo_numeros.js";
-import is_valid from "./modulos/modulo_valid.js";
-import { remover } from "./modulos/modulo_validaciones.js";
-import solicitud from "./modulos/modulo_usuarios.js";
-import { URL } from "./modulos/config.js";
+import isEmail from "./module.js";
+import SoloLetras from "./module3.js";
+import SoloNumeros from "./module2.js";
+import is_valid from "./isvalid.js";
+import remover  from "./remover.js";
+import solicitud from "./ajax.js";
+import { URL } from "./config.js";
 
 // variables 
 
@@ -214,28 +214,25 @@ politicas.addEventListener("change", function (e) {
 // Validaciones específicas
 
 // Validación del documento
-documento.addEventListener("keypress", solonumeros);
+documento.addEventListener("keypress", SoloNumeros);
 
 // Validación del telefono
-telefono.addEventListener("keypress", solonumeros);
+telefono.addEventListener("keypress", SoloNumeros);
 
 // Validación del nombre 
 nombres.addEventListener("keypress", (event) => {
-    sololetras(event, nombres);
+    SoloLetras(event, nombres);
 });
 
 // Validación del apellido
 apellidos.addEventListener("keypress", (event) => {
-    sololetras(event, apellidos);
+    SoloLetras(event, apellidos);
 });
 
 // Validación del correo electrónico
 correo.addEventListener("blur", (event) => {
-    correoelectronico(event, correo);
+    isEmail(event, correo);
 });
-
-// toca hacer prmosas 
-// formulario nuevvo que lleno el slecter
 
 
 

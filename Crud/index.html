@@ -1,50 +1,58 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./styles.css">
-    <title>CRUD</title>
+    <title>FORMULARIO DE VALIDACIONES</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-
     <div class="contenedor_principal layout mt-40 mb-40">
         <form class="form" novalidate>
-            <label for="nombre">Nombre</label>
-            <input type="text" id="nombre" autocomplete="off" required>
+
+            <label for="nombres">Nombres:</label>
+            <input type="text" id="nombres" autocomplete="off" placeholder="Ingresa tus nombres" required>
             
-            <label for="apellido">Apellido</label>
-            <input type="text" id="apellido" autocomplete="off" required>
+
+            <label for="apellidos">Apellidos:</label>
+            <input type="text" id="apellidos" autocomplete="off" placeholder="Ingresa tus apellidos" required>
             
-            <label for="telefono">Teléfono</label>
-            <input type="text" id="telefono" autocomplete="off" required>
+
+            <label for="correo">Correo Electrónico:</label>
+            <input type="email" id="correo" autocomplete="off" placeholder="Ingresa tu correo Electrónico" required>
             
-            <label for="direccion">Dirección</label>
-            <input type="text" id="direccion" autocomplete="off" required>
+
+            <label for="telefono">Teléfono:</label>
+            <input type="tel" id="telefono" autocomplete="off" placeholder="Ingresa tu teléfono" required>
             
-            <label for="tipo">Tipo de documento</label>
-            <select name="tipo" id="tipo" required>
+
+            <label for="direccion">Dirección:</label>
+            <input type="text" id="direccion" autocomplete="off" placeholder="Ingresa tu dirección" required>
+
+
+            <label for="tipodocumento">Tipo de documento:</label>
+            <select id="tipodocumento" required>
             </select>
             
-            <label for="documento">Documento</label>
-            <input type="text" id="documento" autocomplete="off" required>
+
+            <label for="documento">Número de documento:</label>
+            <input type="text" id="documento" autocomplete="off" placeholder="Ingresa número de documento" required>
             
-            <div>
+
+            <div class="button__checkbox">
                 <input type="checkbox" id="politicas" required>
-                <label for="politicas">Acepta políticas</label>
+                <label for="politicas">Acepta las políticas de uso</label>
             </div>
             
-            <label for="email">Email</label>
-            <input type="email" id="email" autocomplete="off" required>
-            
-            <button type="submit">Enviar</button>
+
+            <button id="boton" type="submit">Enviar</button>
         </form>
 
         <div class="grid-container">
             <table>
                 <thead>
                     <th>Nombre</th>
-                    <th>Apellidos</th>
+                    <th>Apellido</th>
                     <th>Correo Electrónico</th>
                     <th>Teléfono</th>
                     <th>Dirección</th>
@@ -52,10 +60,12 @@
                     <th>Número de documento</th>
                     <th>Acciones</th>
                 </thead>
+                
                 <tbody>
                 </tbody>
             </table>
         </div>
+
         <template id="template">
             <tr>
             <td class="nombre"></td>
@@ -67,9 +77,10 @@
             <td class="número_de_documento"></td>
             </tr>
         </template>
+
     </div>
 
-<script src="./app.js" type="module"></script>
+    <script src="app.js" type="module"></script>
 </body>
 </html>
 

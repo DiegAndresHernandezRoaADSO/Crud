@@ -1,2 +1,2 @@
-export  const URL = `http://localhost:3000/user`;
+export const URL = 'http://localhost:3000';
 
