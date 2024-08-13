@@ -1,168 +1,243 @@
-import isvalid from "./isvalid.js";
-import isEmail from "./module.js";
-import SoloNumeros from "./module2.js";
-import SoloLetras  from "./module3.js";
-import remover from "./remover.js"
-import solicitud from "./ajax.js";
-import { URL } from "./config.js";
+// importanciones
 
-const $formulario = document.querySelector('form');
-const nombre = document.querySelector("#nombre");
-const apellido = document.querySelector("#apellido");
+import { correoelectronico } from "./modulos/modulo_correo.js";
+import { sololetras } from "./modulos/modulos_letras.js";
+import { solonumeros } from "./modulos/modulo_numeros.js";
+import is_valid from "./modulos/modulo_valid.js";
+import { remover } from "./modulos/modulo_validaciones.js";
+import solicitud from "./modulos/modulo_usuarios.js";
+import { URL } from "./modulos/config.js";
+
+// variables 
+
+// Selecciona el primer formulario (<form>) en el documento HTML. Lo asigna a la variable $formulario
+const $formulario = document.querySelector("form");
+
+// Selecciona los elementos del formulario por su ID. Cada uno se asigna a una variable
+const nombres = document.querySelector("#nombres");
+const apellidos = document.querySelector("#apellidos");
 const telefono = document.querySelector("#telefono");
 const direccion = document.querySelector("#direccion");
-const tipo = document.querySelector("#tipo");
+const tipodocumento = document.querySelector("#tipodocumento");
 const documento = document.querySelector("#documento");
+const correo = document.querySelector("#correo");
 const politicas = document.querySelector("#politicas");
-const email = document.querySelector("#email");
-const button = document.querySelector("button");
-const tbusers = document.querySelector("#tbusers");
-const fragmento = document.createDocumentFragment("");
+const boton = document.querySelector("#boton");
 const tbody = document.querySelector("tbody");
-console.log(tbody);
+
+// TEMPLATE, // Obtener el template y su contenido
+const $template = document.querySelector("#template").content;
+
+// FRAGMENTOS
+const $fragmento = document.createDocumentFragment();
 
 
+//  Se añade un listener al formulario que llama a la función validar cuando se intenta enviar el formulario.
+$formulario.addEventListener("submit", (event) => {
+    let response = is_valid(event, "form [required]")
+    // para hacer las peticiones 
+    // En lugar de pasar la ruta al recurso que deseas solicitar a la llamada del método fetch(), puedes crear un objeto de petición
+    // capturar todos los atributos
 
+    const data = {
+        nombres: nombres.value,
+        apellidos: apellidos.value,
+        telefono: telefono.value,
+        direccion: direccion.value,
+        tipodocumento: tipodocumento.value,
+        documento: documento.value,
+        correo: correo.value
+    }
+    if (response) {
+        fetch(`${URL}/users`, {
+          method: 'POST',
+          body: JSON.stringify(data), // se transforma a un json
+          headers: {
+            'Content-type': 'application/json; charset=UTF-8',
+          },
+        })
+        .then((response) => response.json()) // se vuelve un objeto de js
+        .then(data => {
+            console.log(data);
+            nombres.value = "";
+            apellidos.value = "";
+            telefono.value = "";
+            direccion.value = "";
+            documento.value = "";
+            correo.value = "";
+
+            nombres.classList.remove("correcto");
+            apellidos.classList.remove("correcto");
+            telefono.classList.remove("correcto");
+            direccion.classList.remove("correcto");
+            documento.classList.remove("correcto");
+            correo.classList.remove("correcto");
+
+            politicas.checked = false;
+
+            tipodocumento.value = "";
+            tipodocumento.classList.remove("correcto");
+
+            alert("Señor usuario tus datos fueron enviados exitosamente");
+
+            createRow(data);
+            
+        })
+        .catch(error => {
+            alert("Señor usuario tus datos no fueron enviados");
+            console.error("error")
+        })
+        .finally(() => {
+            document.querySelector("#boton").disabled = false; // Habilitar el boton
+        });
+        document.querySelector("#boton").disabled = true; // Desabilitar el boton
+    }
+});
+
+// GET se utiliza para obtener un recurso especifico del servidor
+// POST se utiliza para crear un nuevo recurso en el servidor
+// PUT se utiliza para actualizar un recurso exitente en el servidor
+// DELETE se utiliza para eliminar un resurso especifico del servidor 
+
+// keydown -- cuando ecribo tecla por tecla 
+// keypress -- cuando la presiono
+// keyup -- cuando la oprimo 
+
+// Se añade un listener para el evento keyup en cada uno de los campos. Cuando se suelta una tecla, se llama a la función remover para verificar el estado del campo.
+[nombres, apellidos, correo, telefono, direccion, documento].forEach(input => {
+    input.addEventListener("keyup", () => {
+        remover(input);
+    });
+});
+
+
+// Manejar el cambio en el tipo de documento
+// Al cambiar el valor del tipo de documento, se verifica si es diferente de "0". Se actualiza el estado visual del campo según corresponda.
+tipodocumento.addEventListener("change", () => {
+    if (tipodocumento.value === "") {
+        // Si el valor es "0", significa que no se ha seleccionado un tipo de documento
+        tipodocumento.classList.add("error");
+        tipodocumento.classList.remove("correcto");
+    } else {
+        // Si el valor no es "0", significa que se ha seleccionado un tipo de documento
+        tipodocumento.classList.remove("error");
+        tipodocumento.classList.add("correcto");
+    }
+});
+
+// AGREGANDO LA NUEVA OPTION AL SELECT
 const documentos = () => {
-    const fracmento = document.createDocumentFragment();
+    const fragment = document.createDocumentFragment();
     fetch('http://localhost:3000/documento')
     .then((response) => response.json())
     .then((data) => {
-        let option = document.createElement('option');
-        option.textContent = 'seleccione ...';
-        option.value = ''
-        fracmento.appendChild(option);
-            data.forEach(element =>{
-            let option = document.createElement('option');
+
+        let optiondeterminada = document.createElement("option"); // crear la opcion por defecto
+        optiondeterminada.value = ""; // valor vacio para la opcion por defecto 
+        optiondeterminada.textContent ="Selecciona el tipo de documento...";
+        optiondeterminada.select = true; // para que quede selecciona como predeterminada
+        fragment.appendChild( optiondeterminada); // se agrega la opcion por defecto al fragemen
+
+        data.forEach(element => {
+            console.log(element);
+            let option = document.createElement("option");
             option.value = element.id;
-            option.textContent = element.name
-            fracmento.appendChild(option);
+            option.textContent = element.nombre;
+            fragment.appendChild(option);
         });
-        tipo_Documento.appendChild(fragmento);
+        tipodocumento.appendChild(fragment);
+    })
+}
+
+// LISTAR LOS USUARIOS 
+const listarUsuarios = async () => {
+    const data = await solicitud("users")
+    data.forEach(element => {
+
+       // Llenar los datos del usuario en el template clonado
+       $template.querySelector('.nombre').textContent = element.nombres;
+       $template.querySelector('.apellidos').textContent = element.apellidos;
+       $template.querySelector('.correo_Electrónico').textContent = element.correo;
+       $template.querySelector('.teléfono').textContent = element.telefono;
+       $template.querySelector('.dirección').textContent = element.direccion;
+       $template.querySelector('.tipo_de_documento').textContent = element.tipodocumento;
+       $template.querySelector('.número_de_documento').textContent = element.documento;
+
+       // Clonar el contenido del template para usarlo
+       const clone = document.importNode($template, true);
+
+       $fragmento.appendChild(clone);
+
     });
+    tbody.appendChild($fragmento);
+}
+
+const createRow = (data) => {
+    const tr =  tbody.insertRow(-1);
+
+    const tdnombre = tr.insertCell(0);
+    const tdapellidos = tr.insertCell(1);
+    const tdcorreo_Electrónico = tr.insertCell(2);
+    const tdteléfono = tr.insertCell(3);
+    const tddirección= tr.insertCell(4);
+    const tdtipo_de_documento = tr.insertCell(5);
+    const tdnúmero_de_documento = tr.insertCell(6);
+
+    tdnombre.textContent = data.nombres;
+    tdapellidos.textContent = data.apellidos;
+    tdcorreo_Electrónico.textContent = data.correo;
+    tdteléfono.textContent = data.telefono;
+    tddirección.textContent = data.direccion;
+    tdtipo_de_documento.textContent = data.tipodocumento;
+    tdnúmero_de_documento.textContent = data.documento;
 }
 
 
-
-const listar = async () =>{
-    const data = await solicitud("users");
-    data.forEach(element =>{
-        tbusers.querySelector(".nombre").textContent = element.first_name;
-        tbusers.querySelector(".apellido").textContent = element.last_name;
-        tbusers.querySelector(".direccion").textContent = element.address;
-        tbusers.querySelector(".tipo").textContent = element.tipo;
-        tbusers.querySelector(".email").textContent = element.email;
-        tbusers.querySelector(".phone").querySelector = element.phone;
-        tbusers.querySelector(".documento").querySelector = element.document;
-
-        const clone = document.importNode(tbusers, true);
-        fragmento.appendChild(clone);
-    })
-
-    tbody.appendChild(fragmento);
-}
-
- const createRow = (data) =>{
-    const tr = tbody.insertRow(-1);
-
-    const tdNombre = tr.insertCell(0);
-    const tdApellido = tr.insertCell(1);
-    const tdtelefono = tr.insertCell(2);
-    const tdDireccion = tr.insertCell(3)
- }
-
-document.addEventListener("DOMContentLoaded", (event) => {
-    listar();
+// Manejar el estado del botón de enviar según el checkbox
+addEventListener("DOMContentLoaded", (event) => {
+    listarUsuarios();
     documentos();
-    if (!politicas.checked) {
-        button.setAttribute("disabled", "");
+    if(!politicas.checked) {
+        boton.setAttribute("disabled", "");
     }
 });
 
-politicas.addEventListener("change", (event) => {
-    if (event.target.checked) {
-        button.removeAttribute("disabled");
-    } else {
-        button.setAttribute("disabled", "");
-    }
+politicas.addEventListener("change", function (e) {
+    if (e.target.checked) {
+        boton.removeAttribute("disabled");
+    } 
 });
 
-$formulario.addEventListener("submit", (event)=>{
-    let response = isvalid(event, "from[required]");
-    const data ={
-        first_name: nombre.value,
-        last_name: apellido.value,
-        address:direccion.value,
-        type_id: tipo.value,
-        email: email.value,
-        phone:telefono.value,
-        document:documento.value
-    }
-    if (response) {
-        fetch('http://localhost:3000/user',{
-        method: 'POST',
-        body: JSON.stringify(data),
-        headers: {
-            'Content-type': 'application/json; charset=UTF-8',
-        },
-    })
-    .then((response)=>{response.json})
-    .then((json)=>{
-        //codigo
-        nombre.value = " " ;
-    })
-    }
-})
+// Agrega el evento de submit al formulario
+// document.querySelector("form").addEventListener("submit", validar);
 
-$formulario.addEventListener('submit', (event =>{
-    isvalid(event, "form > [required] ");
-}));
+// Validaciones específicas
 
-nombre.addEventListener("keyup", (event) => {
-    remover(event, nombre);
+// Validación del documento
+documento.addEventListener("keypress", solonumeros);
+
+// Validación del telefono
+telefono.addEventListener("keypress", solonumeros);
+
+// Validación del nombre 
+nombres.addEventListener("keypress", (event) => {
+    sololetras(event, nombres);
 });
 
-apellido.addEventListener("keyup", (event) => {
-    remover(event, apellido);
+// Validación del apellido
+apellidos.addEventListener("keypress", (event) => {
+    sololetras(event, apellidos);
 });
 
-telefono.addEventListener("keyup", (event) => {
-    remover(event, telefono);
+// Validación del correo electrónico
+correo.addEventListener("blur", (event) => {
+    correoelectronico(event, correo);
 });
 
-direccion.addEventListener("keyup", (event) => {
-    remover(event, direccion);
-});
-
-tipo.addEventListener("change", (event) => {
-    remover(event, tipo);
-});
-
-documento.addEventListener("keyup", (event) => {
-    remover(event, documento);
-});
-
-email.addEventListener("keypress", (event) => {
-    remover (event, email);
-});
+// toca hacer prmosas 
+// formulario nuevvo que lleno el slecter
 
 
-
-documento.addEventListener("keypress", SoloNumeros);
-
-telefono.addEventListener("keypress", SoloNumeros);
-
-nombre.addEventListener("keypress", (event) => {
-    SoloLetras(event, nombre);
-});
-
-apellido.addEventListener("keypress", (event) => {
-    SoloLetras(event, apellido);
-});
-
-email.addEventListener("blur", (event) => {
-    isEmail(event, email);
-});
 
 
 

@@ -7,11 +7,13 @@
         <title>Formulario 2</title>
 </head>
 <body>
-        <form class="form" novalidate>
-                <label for="nombre">Nombre</label>
-                <input type="text" id="nombre" autocomplete="off">
-                <button type="submit" >Guardar</button>
-        </form>
+        <div class="contenedor_principal">
+                <form class="form" novalidate>
+                <label for="nombre">Nombre:</label>
+                <input type="text" id="nombre" autocomplete="off" placeholder="Ingresa tus nombres" required>
+                <button id="boton" type="submit">Enviar</button>
+                </form>
+        </div>
         
         <script src="./script.js" type="module"></script>
 </body>

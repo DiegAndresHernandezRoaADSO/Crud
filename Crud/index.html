@@ -7,7 +7,8 @@
     <title>CRUD</title>
 </head>
 <body>
-    <div class="container layout mt-40 mb-40">
+
+    <div class="contenedor_principal layout mt-40 mb-40">
         <form class="form" novalidate>
             <label for="nombre">Nombre</label>
             <input type="text" id="nombre" autocomplete="off" required>
@@ -39,38 +40,36 @@
             <button type="submit">Enviar</button>
         </form>
 
-        <div class="tabla">
+        <div class="grid-container">
             <table>
-                <th style="gap: 20px;">Nombre</th>
-                <th>Apellido</th>
-                <th>Teléfono</th>
-                <th>Dirección</th>
-                <th>Tipo de documento </th>
-                <th>Documento</th>
-                <th>Email</th>
+                <thead>
+                    <th>Nombre</th>
+                    <th>Apellidos</th>
+                    <th>Correo Electrónico</th>
+                    <th>Teléfono</th>
+                    <th>Dirección</th>
+                    <th>Tipo de documento</th>
+                    <th>Número de documento</th>
+                    <th>Acciones</th>
+                </thead>
+                <tbody>
+                </tbody>
             </table>
-            <tbody>
-                
-            </tbody>
         </div>
-</div>
+        <template id="template">
+            <tr>
+            <td class="nombre"></td>
+            <td class="apellidos"></td>
+            <td class="correo_Electrónico"></td>
+            <td class="teléfono"></td>
+            <td class="dirección"></td>
+            <td class="tipo_de_documento"></td>
+            <td class="número_de_documento"></td>
+            </tr>
+        </template>
+    </div>
 
-<template id="tb_users">
-    <tr>
-        <td class="nombre"></td>
-        <td class="apellido"></td>
-        <td class="telefono"></td>
-        <td class="direccion"></td>
-        <td class="tipo"></td>
-        <td class="documento"></td>
-        <td class="email"></td>
-    </tr>
-</template>
-
-
-
-
-    <script src="./app.js" type="module"></script>
+<script src="./app.js" type="module"></script>
 </body>
 </html>
 
