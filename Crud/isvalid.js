@@ -1,4 +1,4 @@
-import  isEmail  from "./module.js";
+import { isEmail } from "./module.js";
 
 const is_valid = (event, form) => {
   event.preventDefault(); // Evita el envío automático del formulario
@@ -39,5 +39,3 @@ const is_valid = (event, form) => {
 
 export default is_valid;
 
-// Nota: Asegúrate de definir la función 'correoelectronico' en otro lugar del código.
-// La función 'correoelectronico' debe manejar la validación específica del campo de correo electrónico.

@@ -7,13 +7,14 @@ const solicitud = async (url) => {
     return respuesta;
 }
 
-export const enviar =async(edpoint,option)=>{
+export const enviar =async(endpoint, option) =>{
     try {
-        let solicitud = await fetch(`${URL}/${edpoint}`,option);
-        let data = await solicitud.json();
-        return data;
+        let solicitud = await fetch(`${URL}/${endpoint}`, option)
+        let data = await solicitud.json()
+        return data
     } catch (error) {
-        return error
+        return error;
+        
     }
 }
 

@@ -1,8 +1,8 @@
 // importanciones
 
-import isEmail from "./module.js";
+import { isEmail } from "./module.js";
 import SoloLetras from "./module3.js";
-import SoloNumeros from "./module2.js";
+import { SoloNumeros } from "./module2.js";
 import is_valid from "./isvalid.js";
 import remover  from "./remover.js";
 import solicitud from "./ajax.js";
@@ -215,17 +215,22 @@ const createRow = (data) => {
 }
 
 
-const buscar= (element) =>{
-    // fetch(`${URL}/users`)
-    // .then((response) => response.json())
-    // .then((json) => console.log(json));
-    // console.log(element.dataset.nombre);
-    console.log(element.dataset.id);
-    enviar{users/{}}
-    
-
-    
-    
+const buscar = async (elemento) => {
+    enviar((`users/${elemento.dataset.id}`) , {
+        method: 'PATCH',
+        headers: {
+          'Content-type': 'application/json; charset=UTF-8',
+        },
+      }).then((data) => {
+        nombres.value = data.nombres;
+        apellidos.value = data.apellidos;
+        telefono.value = data.telefono;
+        direccion.value = data.direccion;
+        tipodocumento.value = data.tipodocumento;
+        documento.value = data.documento;
+        correo.value = data.correo;
+        console.log(data);
+    });
 }
 
 

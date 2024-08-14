@@ -39,6 +39,10 @@
     {
       "id": "1faa",
       "nombre": "cedula"
+    },
+    {
+      "id": "fc78",
+      "nombre": "tarjeta"
     }
   ]
 }

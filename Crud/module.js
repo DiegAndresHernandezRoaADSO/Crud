@@ -1,4 +1,4 @@
-const isEmail = (event, elemento) => {
+export const isEmail = (event, elemento) => {
     let expresion = /^[\w-._]+@[\w-._]+(\.[a-zA-Z]{2,4}){1,2}$/;
     
     console.log(expresion, elemento.value);
@@ -14,7 +14,7 @@ const isEmail = (event, elemento) => {
     }
 };
 
-export default isEmail;
+
 
 
 
