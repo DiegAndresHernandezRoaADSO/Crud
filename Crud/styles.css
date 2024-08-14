@@ -73,6 +73,7 @@ button {
     cursor: pointer;
     transition: background-color 0.3s, transform 0.3s;
     border: none;
+    margin: 5px;
 }
 
 button:hover {
@@ -95,11 +96,11 @@ label {
 
 /* Estilos para inputs con estados */
 .error {
-    border-color: #dc3545;
+    border-color: 2px #dc3545;
 }
 
 .correcto {
-    border-color: #28a745;
+    border-color: 2px #28a745;
 }
 
 /* Mensajes de error */

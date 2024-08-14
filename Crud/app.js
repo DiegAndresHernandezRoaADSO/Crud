@@ -152,7 +152,18 @@ const documentos = () => {
 // LISTAR LOS USUARIOS 
 const listarUsuarios = async () => {
     const data = await solicitud("users")
+    const losdocumentos = await solicitud("documento");
+
+
     data.forEach(element => {
+        let nombre = losdocumentos.find((documento) => documento.id === element.tipodocumento).nombre
+        console.log(nombre);
+
+
+
+
+
+
 
        // Llenar los datos del usuario en el template clonado
        $template.querySelector('.nombre').textContent = element.nombres;
@@ -163,14 +174,23 @@ const listarUsuarios = async () => {
        $template.querySelector('.tipo_de_documento').textContent = element.tipodocumento;
        $template.querySelector('.número_de_documento').textContent = element.documento;
 
-       // Clonar el contenido del template para usarlo
+       $template.querySelector(".modificar").setAttribute("data-id", element.id);
+       $template.querySelector(".eliminar").setAttribute("data-id", element.id);
+
+
+       // se clona el contenido del template que se esta usando
+
        const clone = document.importNode($template, true);
-
        $fragmento.appendChild(clone);
-
     });
     tbody.appendChild($fragmento);
 }
+
+
+
+
+
+
 
 const createRow = (data) => {
     const tr =  tbody.insertRow(-1);
@@ -183,6 +203,7 @@ const createRow = (data) => {
     const tdtipo_de_documento = tr.insertCell(5);
     const tdnúmero_de_documento = tr.insertCell(6);
 
+
     tdnombre.textContent = data.nombres;
     tdapellidos.textContent = data.apellidos;
     tdcorreo_Electrónico.textContent = data.correo;
@@ -190,7 +211,23 @@ const createRow = (data) => {
     tddirección.textContent = data.direccion;
     tdtipo_de_documento.textContent = data.tipodocumento;
     tdnúmero_de_documento.textContent = data.documento;
+
 }
+
+
+const buscar= (element) =>{
+    // fetch(`${URL}/users`)
+    // .then((response) => response.json())
+    // .then((json) => console.log(json));
+    // console.log(element.dataset.nombre);
+    console.log(element.dataset.id);
+    enviar{users/{}}
+    
+
+    
+    
+}
+
 
 
 // Manejar el estado del botón de enviar según el checkbox
@@ -234,6 +271,12 @@ correo.addEventListener("blur", (event) => {
     isEmail(event, correo);
 });
 
+
+document.addEventListener("click",(event)=>{
+    if(event.target.matches(".modificar")){
+        buscar(event.target)   //llamos al argumento
+    }
+})
 
 
 
