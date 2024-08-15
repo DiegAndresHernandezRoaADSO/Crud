@@ -1,9 +1,8 @@
 import { URL } from "./config.js";
 
 const solicitud = async (url) => {
-    let solicitar = await fetch(`${URL}/${url}`);
-    let respuesta = await solicitar.json();
-    
+    let solicitamos = await fetch(`${URL}/${url}`);
+    let respuesta = await solicitamos.json();
     return respuesta;
 }
 

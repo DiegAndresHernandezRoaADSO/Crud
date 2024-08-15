@@ -5,7 +5,7 @@ import SoloLetras from "./module3.js";
 import { SoloNumeros } from "./module2.js";
 import is_valid from "./isvalid.js";
 import remover  from "./remover.js";
-import solicitud, { enviar } from "./ajax.js";
+import solicitud, {enviar }from "./ajax.js";
 import { URL } from "./config.js";
 
 // variables 
@@ -24,6 +24,9 @@ const correo = document.querySelector("#correo");
 const politicas = document.querySelector("#politicas");
 const boton = document.querySelector("#boton");
 const tbody = document.querySelector("tbody");
+const id = document.querySelector("#user");
+
+
 
 // TEMPLATE, // Obtener el template y su contenido
 const $template = document.querySelector("#template").content;
@@ -40,13 +43,13 @@ $formulario.addEventListener("submit", (event) => {
     // capturar todos los atributos
 
     const data = {
-        nombres: nombres.value,
-        apellidos: apellidos.value,
-        telefono: telefono.value,
-        direccion: direccion.value,
-        tipodocumento: tipodocumento.value,
-        documento: documento.value,
-        correo: correo.value
+        // nombres: nombres.value,
+        // apellidos: apellidos.value,
+        // telefono: telefono.value,
+        // direccion: direccion.value,
+        // tipodocumento: tipodocumento.value,
+        // documento: documento.value,
+        // correo: correo.value
     }
     if (response) {
         fetch(`${URL}/users`, {
@@ -155,7 +158,8 @@ const listarUsuarios = async () => {
     const losdocumentos = await solicitud("documento");
 
 
-    data.forEach(element => {
+
+        data.forEach(element => {
         let nombre = losdocumentos.find((documento) => documento.id === element.tipodocumento).nombre
         console.log(nombre);
 
@@ -167,6 +171,7 @@ const listarUsuarios = async () => {
        $template.querySelector('.dirección').textContent = element.direccion;
        $template.querySelector('.tipo_de_documento').textContent = element.tipodocumento;
        $template.querySelector('.número_de_documento').textContent = element.documento;
+
 
        $template.querySelector(".modificar").setAttribute("data-id", element.id);
        $template.querySelector(".eliminar").setAttribute("data-id", element.id);
@@ -187,7 +192,7 @@ const listarUsuarios = async () => {
 
 
 const createRow = (data) => {
-    const tr =  tbody.insertRow(-1);
+    const tr = tbody.insertRow(-1);
 
     const tdnombre = tr.insertCell(0);
     const tdapellidos = tr.insertCell(1);
@@ -208,34 +213,115 @@ const createRow = (data) => {
 
 }
 
-const buscar = async (elemento) => {
-    try {
-        const data = await enviar(`users/${elemento.dataset.id}`, {
-            method: 'PATCH',
-            headers: {
-                'Content-Type': 'application/json; charset=UTF-8',
-            },
-        });
+const buscar = async(element) => {
+    let data = await enviar(`users/${element.dataset.id}`,{
+        method: 'PATCH',
+        headers: {
+            'Content-type': 'application/json; charset=UTF-8'
+        }
+    });
+    loadform(data);
+};
 
-        nombres.value = data.nombres || '';
-        apellidos.value = data.apellidos || '';
-        telefono.value = data.telefono || '';
-        direccion.value = data.direccion || '';
-        tipodocumento.value = data.tipodocumento || '';
-        documento.value = data.documento || '';
-        correo.value = data.correo || '';
-
-        console.log(data);
-    } catch (error) {
-        console.error('Error al buscar datos:', error);
+    
+const save = (event)=>{
+    let response = is_valid(event, "from [required]");
+    const data={
+        nombres: nombres.value,
+        apellidos:apellidos.value,
+        direccion:direccion.value,
+        tipodocumento:tipodocumento.value,
+        correo:correo.value,
+        telefono:telefono.value,
+        documento:documento.value
     }
-}  
+
+    if(response){
+        if(user.value === ""){
+            guardar(data)
+        }else{
+            actualiza(data)
+        }
+    }
+} 
+const guardar =(data) =>{
+    console.log(data);
+
+    return
+    fetch(`${URL}/users`,{
+        method: `POST`,
+        body: JSON.stringify(data),
+        headers: {
+            'Content-type': 'application/json; charset=UTF-8',
+        },    
+    })
+    .then((response)=> response.json())
+    .then((json)=>{
+        //codigo
+        nombres.value = "";
+        createRow(json)
+    })
+}
+
+const actualiza= async(data)=>{
+    const response = await enviar(`users/${user.value}`,{
+        method: 'PUT',
+        body: JSON. stringify(data),
+        headers: {
+            'Content-type': 'application/json; charset=UTF-8',
+        },
+    });
+
+    //limpiar form
+
+    nombres.value = " ";
+
+    console.log(response);
+}
+
+
+const limpiarFomr = ()=>{
+    nombres.value = "";
+    nombres.value = "";
+    nombres.value = "";
+    nombres.value = "";
+    nombres.value = "";
+}
+
+
+const  loadform = (data)=>{
+    const {
+
+        id:user_id,
+        nombres : name,
+        apellidos : last_name,
+        telefono : phone,
+        direccion: addres,
+        tipodocumento : type,
+        documento : document,
+        correo : email
+    } = data;
+
+
+    user.value = id;
+    nombres.value = name;
+    apellidos.value = last_name;
+    telefono.value = phone;
+    direccion.value = addres;
+    tipodocumento.value = type;
+    documento.value = document;
+    correo.value = email;
+    politicas.value = true;
+    button.removeAttribute("disabled");   
+
+}
+
 
 
 // Manejar el estado del botón de enviar según el checkbox
 addEventListener("DOMContentLoaded", (event) => {
-    listarUsuarios();
     documentos();
+    listarUsuarios();
     if(!politicas.checked) {
         boton.setAttribute("disabled", "");
     }
@@ -258,6 +344,10 @@ documento.addEventListener("keypress", SoloNumeros);
 // Validación del telefono
 telefono.addEventListener("keypress", SoloNumeros);
 
+$formulario.addEventListener("submit", save);
+
+
+
 // Validación del nombre 
 nombres.addEventListener("keypress", (event) => {
     SoloLetras(event, nombres);
@@ -277,9 +367,16 @@ correo.addEventListener("blur", (event) => {
 document.addEventListener("click", (event) => {
     if(event.target.matches(".modificar")){
         buscar(event.target);
-
     }
 });
+
+
+
+
+
+
+
+
 
 
 
