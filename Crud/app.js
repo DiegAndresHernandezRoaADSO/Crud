@@ -5,7 +5,7 @@ import SoloLetras from "./module3.js";
 import { SoloNumeros } from "./module2.js";
 import is_valid from "./isvalid.js";
 import remover  from "./remover.js";
-import solicitud from "./ajax.js";
+import solicitud, { enviar } from "./ajax.js";
 import { URL } from "./config.js";
 
 // variables 
@@ -159,12 +159,6 @@ const listarUsuarios = async () => {
         let nombre = losdocumentos.find((documento) => documento.id === element.tipodocumento).nombre
         console.log(nombre);
 
-
-
-
-
-
-
        // Llenar los datos del usuario en el template clonado
        $template.querySelector('.nombre').textContent = element.nombres;
        $template.querySelector('.apellidos').textContent = element.apellidos;
@@ -214,25 +208,28 @@ const createRow = (data) => {
 
 }
 
-
 const buscar = async (elemento) => {
-    enviar((`users/${elemento.dataset.id}`) , {
-        method: 'PATCH',
-        headers: {
-          'Content-type': 'application/json; charset=UTF-8',
-        },
-      }).then((data) => {
-        nombres.value = data.nombres;
-        apellidos.value = data.apellidos;
-        telefono.value = data.telefono;
-        direccion.value = data.direccion;
-        tipodocumento.value = data.tipodocumento;
-        documento.value = data.documento;
-        correo.value = data.correo;
-        console.log(data);
-    });
-}
+    try {
+        const data = await enviar(`users/${elemento.dataset.id}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json; charset=UTF-8',
+            },
+        });
 
+        nombres.value = data.nombres || '';
+        apellidos.value = data.apellidos || '';
+        telefono.value = data.telefono || '';
+        direccion.value = data.direccion || '';
+        tipodocumento.value = data.tipodocumento || '';
+        documento.value = data.documento || '';
+        correo.value = data.correo || '';
+
+        console.log(data);
+    } catch (error) {
+        console.error('Error al buscar datos:', error);
+    }
+}  
 
 
 // Manejar el estado del botón de enviar según el checkbox
@@ -277,11 +274,12 @@ correo.addEventListener("blur", (event) => {
 });
 
 
-document.addEventListener("click",(event)=>{
+document.addEventListener("click", (event) => {
     if(event.target.matches(".modificar")){
-        buscar(event.target)   //llamos al argumento
+        buscar(event.target);
+
     }
-})
+});
 
 
 
