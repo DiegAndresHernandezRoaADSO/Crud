@@ -156,12 +156,17 @@ const documentos = () => {
 const listarUsuarios = async () => {
     const data = await solicitud("users")
     const losdocumentos = await solicitud("documento");
+    
 
 
 
-        data.forEach(element => {
-        let nombre = losdocumentos.find((documento) => documento.id === element.tipodocumento).nombre
-        console.log(nombre);
+        data.forEach(element =>{
+            let nombres = losdocumentos.find((documento) => documento.id === element.tipodocumento);
+
+            //Asignar el id
+            //tBusers.querySelector("tr").setAtribute("id",`user_${element.id}`)
+            
+            console.log(nombres);
 
        // Llenar los datos del usuario en el template clonado
        $template.querySelector('.nombre').textContent = element.nombres;
@@ -179,6 +184,7 @@ const listarUsuarios = async () => {
 
        // se clona el contenido del template que se esta usando
 
+
        const clone = document.importNode($template, true);
        $fragmento.appendChild(clone);
     });
@@ -189,11 +195,9 @@ const listarUsuarios = async () => {
 
 
 
-
-
 const createRow = (data) => {
-    const tr = tbody.insertRow(-1);
 
+    const tr = tbody.insertRow(-1);
     const tdnombre = tr.insertCell(0);
     const tdapellidos = tr.insertCell(1);
     const tdcorreo_Electrónico = tr.insertCell(2);
@@ -211,6 +215,23 @@ const createRow = (data) => {
     tdtipo_de_documento.textContent = data.tipodocumento;
     tdnúmero_de_documento.textContent = data.documento;
 
+
+
+    tdnombre.textContent = data.nombres;
+    tdapellidos.textContent = data.apellidos;
+    tdcorreo_Electrónico.textContent = data.correo;
+    tdteléfono.textContent = data.telefono;
+    tddirección.textContent = data.direccion;
+    tdtipo_de_documento = documentos.find((doc)=> doc.id === data.type_id).nombre;
+    tdnúmero_de_documento = textContent = data.phone;
+
+    const div = document.createElement("div");
+    const btnEdit = document.createElement("button");
+    const btnDelete = document.createElement
+
+
+
+
 }
 
 const buscar = async(element) => {
@@ -225,7 +246,7 @@ const buscar = async(element) => {
 
     
 const save = (event)=>{
-    let response = is_valid(event, "from [required]");
+    let response = is_valid(event, "from  [required]");
     const data={
         nombres: nombres.value,
         apellidos:apellidos.value,
@@ -246,8 +267,6 @@ const save = (event)=>{
 } 
 const guardar =(data) =>{
     console.log(data);
-
-    return
     fetch(`${URL}/users`,{
         method: `POST`,
         body: JSON.stringify(data),
@@ -273,25 +292,65 @@ const actualiza= async(data)=>{
     });
 
     //limpiar form
-
     nombres.value = " ";
-
+    apellidos.value = " ";
+    telefono.value = " ";
+    direccion.value = " ";
+    tipodocumento.value = " ";
+    documento.value = " ";
+    correo.value = " ";
+    politicas.checked = false;
     console.log(response);
+    
 }
 
 
 const limpiarFomr = ()=>{
     nombres.value = "";
-    nombres.value = "";
-    nombres.value = "";
-    nombres.value = "";
-    nombres.value = "";
+    apellidos.value = "";
+    telefono.value = "";
+    direccion.value = "";
+    tipodocumento.value = "";
+    documento.value = "";
+    correo.value = "";
+    politicas.checked = false;
+    button.setAttribute("disabled", "");
+
 }
+
+
+const editrow = async (data)=>{
+    const documentos = await solicitud ("documentos");
+    let nombre = documentos.find((documento)=>documento.id === data.type_id).nombres;
+    const tr = document.querySelector(`#user_${data.id}`)
+
+    tr.querySelector(".nombres").textContent = data.nombres;
+    tr.querySelector(".tipo").textContent = nombres;
+
+
+
+
+
+}
+
+const deleteData = (event, element) => {
+    const tr = element.parentNode.parentNode.parentNode;
+    if (confirm("¿Desea eliminar el registro?")) {
+      enviar(`users/${element.dataset.id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
+      }).then((data) => {
+        alert(`El usuario ${data.first_name} fue eliminado con éxtio`);
+         tr.remove();
+      });
+    }
+  };
 
 
 const  loadform = (data)=>{
     const {
-
         id:user_id,
         nombres : name,
         apellidos : last_name,
@@ -320,8 +379,8 @@ const  loadform = (data)=>{
 
 // Manejar el estado del botón de enviar según el checkbox
 addEventListener("DOMContentLoaded", (event) => {
-    documentos();
     listarUsuarios();
+    documentos();
     if(!politicas.checked) {
         boton.setAttribute("disabled", "");
     }
