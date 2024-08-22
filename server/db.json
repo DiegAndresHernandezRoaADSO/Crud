@@ -1,71 +1,13 @@
 {
-  "users": [
+  "users": [],
+  "documents": [
     {
-      "id": "0b34",
-      "nombres": "diego",
-      "apellidos": "hernandez",
-      "telefono": "12345",
-      "direccion": "piedecuesta",
-      "tipodocumento": "d1ee",
-      "documento": "1102634295",
-      "correo": "helloworld@gmail.com"
+      "id": "f4ed",
+      "name": "cedula"
     },
     {
-      "id": "f02f",
-      "nombres": "diego",
-      "apellidos": "hernandez",
-      "telefono": "12345",
-      "direccion": "piedecuesta",
-      "tipodocumento": "d985",
-      "documento": "1102634295",
-      "correo": "hernandez@gmail.com"
-    },
-    {
-      "id": "a729",
-      "nombres": "diego",
-      "apellidos": "hernandez",
-      "telefono": "12345",
-      "direccion": "piedecuesta",
-      "tipodocumento": "d1ee",
-      "documento": "1102634295",
-      "correo": "helloworld@gmail.com"
-    },
-    {
-      "id": "0bc7",
-      "nombres": "diego",
-      "apellidos": "hernandez",
-      "telefono": "12345",
-      "direccion": "piedecuesta",
-      "tipodocumento": "d985",
-      "documento": "1102634295",
-      "correo": "helloworld@gmail.com"
-    },
-    {
-      "id": "0bc7",
-      "nombres": "diego",
-      "apellidos": "hernandez",
-      "telefono": "12345",
-      "direccion": "piedecuesta",
-      "tipodocumento": "d985",
-      "documento": "1102634295",
-      "correo": "helloworld@gmail.com"
-    },
-    {
-      "id": "59ff"
-    }
-  ],
-  "documento": [
-    {
-      "id": "d1ee",
-      "nombre": "ti"
-    },
-    {
-      "id": "d985",
-      "nombre": "tarjeta"
-    },
-    {
-      "id": "3189",
-      "nombre": "cedula"
+      "id": "8ddb",
+      "name": "tarjeta"
     }
   ]
 }

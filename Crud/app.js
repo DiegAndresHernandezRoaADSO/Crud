@@ -1,445 +1,350 @@
-// importanciones
+import is_letters from "./modules/is_letters.js";
+import isEmail from "./modules/is_email.js";
+import is_number from "./modules/is_number.js";
+import remover from "./modules/remove.js";
+import is_valid from "./modules/is_valid.js";
+import solicitud, { enviar } from "./modules/ajax.js";
+import is_empty from "./modules/is_empty.js";
 
-import { isEmail } from "./module.js";
-import SoloLetras from "./module3.js";
-import { SoloNumeros } from "./module2.js";
-import is_valid from "./isvalid.js";
-import remover  from "./remover.js";
-import solicitud, {enviar }from "./ajax.js";
-import { URL } from "./config.js";
-
-// variables 
-
-// Selecciona el primer formulario (<form>) en el documento HTML. Lo asigna a la variable $formulario
 const $formulario = document.querySelector("form");
-
-// Selecciona los elementos del formulario por su ID. Cada uno se asigna a una variable
-const nombres = document.querySelector("#nombres");
-const apellidos = document.querySelector("#apellidos");
+const nombre = document.querySelector("#nombre");
+const apellido = document.querySelector("#apellidos");
 const telefono = document.querySelector("#telefono");
 const direccion = document.querySelector("#direccion");
-const tipodocumento = document.querySelector("#tipodocumento");
+const tipo = document.querySelector("#tipo");
 const documento = document.querySelector("#documento");
-const correo = document.querySelector("#correo");
 const politicas = document.querySelector("#politicas");
-const boton = document.querySelector("#boton");
-const tbody = document.querySelector("tbody");
-const id = document.querySelector("#user");
+const correo = document.querySelector("#email");
+const button = document.querySelector("button");
+const fragmento = document.createDocumentFragment();
+const table = document.querySelector("#table");
+const tbody = document.querySelector("#tbody");
+const $template = document.getElementById("users").content;
+const user = document.querySelector('#user_id');
 
+const cantidad = (elemento) => {
+  let valor = elemento.value.length === 10;
+  if (valor) {
+    elemento.classList.remove("error");
+    elemento.classList.add("correcto");
+  } else {
+    elemento.classList.remove("correcto")
+    elemento.classList.add("error")
+  }
+}
 
-
-// TEMPLATE, // Obtener el template y su contenido
-const $template = document.querySelector("#template").content;
-
-// FRAGMENTOS
-const $fragmento = document.createDocumentFragment();
-
-
-//  Se añade un listener al formulario que llama a la función validar cuando se intenta enviar el formulario.
-$formulario.addEventListener("submit", (event) => {
-    let response = is_valid(event, "form [required]")
-    // para hacer las peticiones 
-    // En lugar de pasar la ruta al recurso que deseas solicitar a la llamada del método fetch(), puedes crear un objeto de petición
-    // capturar todos los atributos
-
-    const data = {
-        // nombres: nombres.value,
-        // apellidos: apellidos.value,
-        // telefono: telefono.value,
-        // direccion: direccion.value,
-        // tipodocumento: tipodocumento.value,
-        // documento: documento.value,
-        // correo: correo.value
-    }
-    if (response) {
-        fetch(`${URL}/users`, {
-          method: 'POST',
-          body: JSON.stringify(data), // se transforma a un json
-          headers: {
-            'Content-type': 'application/json; charset=UTF-8',
-          },
-        })
-        .then((response) => response.json()) // se vuelve un objeto de js
-        .then(data => {
-            console.log(data);
-            nombres.value = "";
-            apellidos.value = "";
-            telefono.value = "";
-            direccion.value = "";
-            documento.value = "";
-            correo.value = "";
-
-            nombres.classList.remove("correcto");
-            apellidos.classList.remove("correcto");
-            telefono.classList.remove("correcto");
-            direccion.classList.remove("correcto");
-            documento.classList.remove("correcto");
-            correo.classList.remove("correcto");
-
-            politicas.checked = false;
-
-            tipodocumento.value = "";
-            tipodocumento.classList.remove("correcto");
-
-            alert("Señor usuario tus datos fueron enviados exitosamente");
-
-            createRow(data);
-            
-        })
-        .catch(error => {
-            alert("Señor usuario tus datos no fueron enviados");
-            console.error("error")
-        })
-        .finally(() => {
-            document.querySelector("#boton").disabled = false; // Habilitar el boton
-        });
-        document.querySelector("#boton").disabled = true; // Desabilitar el boton
-    }
-});
-
-// GET se utiliza para obtener un recurso especifico del servidor
-// POST se utiliza para crear un nuevo recurso en el servidor
-// PUT se utiliza para actualizar un recurso exitente en el servidor
-// DELETE se utiliza para eliminar un resurso especifico del servidor 
-
-// keydown -- cuando ecribo tecla por tecla 
-// keypress -- cuando la presiono
-// keyup -- cuando la oprimo 
-
-// Se añade un listener para el evento keyup en cada uno de los campos. Cuando se suelta una tecla, se llama a la función remover para verificar el estado del campo.
-[nombres, apellidos, correo, telefono, direccion, documento].forEach(input => {
-    input.addEventListener("keyup", () => {
-        remover(input);
-    });
-});
-
-
-// Manejar el cambio en el tipo de documento
-// Al cambiar el valor del tipo de documento, se verifica si es diferente de "0". Se actualiza el estado visual del campo según corresponda.
-tipodocumento.addEventListener("change", () => {
-    if (tipodocumento.value === "") {
-        // Si el valor es "0", significa que no se ha seleccionado un tipo de documento
-        tipodocumento.classList.add("error");
-        tipodocumento.classList.remove("correcto");
-    } else {
-        // Si el valor no es "0", significa que se ha seleccionado un tipo de documento
-        tipodocumento.classList.remove("error");
-        tipodocumento.classList.add("correcto");
-    }
-});
-
-// AGREGANDO LA NUEVA OPTION AL SELECT
 const documentos = () => {
-    const fragment = document.createDocumentFragment();
-    fetch('http://localhost:3000/documento')
-    .then((response) => response.json())
+  const fragmento = document.createDocumentFragment();
+  let option = document.createElement("option");
+  option.value = "";
+  option.textContent = "Seleccione...";
+  fragmento.appendChild(option);
+  solicitud("documents")
     .then((data) => {
+      data.forEach(element => {
+        let option = document.createElement("option");
+        option.value = element.id;
+        option.textContent = element.name;
+        fragmento.appendChild(option);
+      });
+      tipo.appendChild(fragmento);
+    });
+}
 
-        let optiondeterminada = document.createElement("option"); // crear la opcion por defecto
-        optiondeterminada.value = ""; // valor vacio para la opcion por defecto 
-        optiondeterminada.textContent ="Selecciona el tipo de documento...";
-        optiondeterminada.select = true; // para que quede selecciona como predeterminada
-        fragment.appendChild( optiondeterminada); // se agrega la opcion por defecto al fragemen
+const listar = async () => {  
+  
+  const data = await solicitud('users');
 
-        data.forEach(element => {
-            console.log(element);
-            let option = document.createElement("option");
-            option.value = element.id;
-            option.textContent = element.nombre;
-            fragment.appendChild(option);
+  data.forEach((element) => {
+    $template.querySelector("tr").id = `user_${element.id}`;
+    $template.querySelector(".first_name").textContent = element.first_name;
+    $template.querySelector(".last_name").textContent = element.last_name;
+    $template.querySelector(".phone").textContent = element.phone;
+    $template.querySelector(".address").textContent = element.address;
+    $template.querySelector(".type_id").textContent = element.type_id;
+    $template.querySelector(".document").textContent = element.document;
+    $template.querySelector(".email").textContent = element.email;
+
+    $template.querySelector(".edit").setAttribute("data-id", element.id);
+    $template.querySelector(".delete").setAttribute("data-id", element.id);
+
+    let clone = document.importNode($template, true);
+    fragmento.appendChild(clone);
+  }); 
+  table.querySelector('tbody').appendChild(fragmento)
+}
+
+const save = (event) => {
+  let ok = is_valid(event, "form  [required]");
+  //  Capturar todos los atributos
+    const data = {
+      first_name: nombre.value.trim(),
+      last_name: apellido.value.trim(),
+      address: direccion.value.trim(),
+      type_id: tipo.value,
+      email: correo.value,
+      phone: telefono.value,
+      docuement: documento.value,
+  };
+  
+  if (ok) {
+
+    // Preguntamos si el formulario tiene usuario
+    if (user.value === "") {
+        // Creamos un usuario
+        enviar("users", {
+          method: "POST",
+          body: JSON.stringify(data),
+          headers: {
+            "Content-type": "application/json; charset=UTF-8",
+          },
+        }).then((data) => {
+          createRow(data);
+          resetForm();
+          alert(`Usuario creado con éxtio`);
         });
-        tipodocumento.appendChild(fragment);
-    })
-}
-
-// LISTAR LOS USUARIOS 
-const listarUsuarios = async () => {
-    const data = await solicitud("users")
-    const losdocumentos = await solicitud("documento");
-    
-
-
-
-        data.forEach(element =>{
-            let nombres = losdocumentos.find((documento) => documento.id === element.tipodocumento);
-
-            //Asignar el id
-            //tBusers.querySelector("tr").setAtribute("id",`user_${element.id}`)
-            
-            console.log(nombres);
-
-       // Llenar los datos del usuario en el template clonado
-       $template.querySelector('.nombre').textContent = element.nombres;
-       $template.querySelector('.apellidos').textContent = element.apellidos;
-       $template.querySelector('.correo_Electrónico').textContent = element.correo;
-       $template.querySelector('.teléfono').textContent = element.telefono;
-       $template.querySelector('.dirección').textContent = element.direccion;
-       $template.querySelector('.tipo_de_documento').textContent = element.tipodocumento;
-       $template.querySelector('.número_de_documento').textContent = element.documento;
-
-
-       $template.querySelector(".modificar").setAttribute("data-id", element.id);
-       $template.querySelector(".eliminar").setAttribute("data-id", element.id);
-
-
-       // se clona el contenido del template que se esta usando
-
-
-       const clone = document.importNode($template, true);
-       $fragmento.appendChild(clone);
-    });
-    tbody.appendChild($fragmento);
-}
-
-
-
-
-
-const createRow = (data) => {
-
-    const tr = tbody.insertRow(-1);
-    const tdnombre = tr.insertCell(0);
-    const tdapellidos = tr.insertCell(1);
-    const tdcorreo_Electrónico = tr.insertCell(2);
-    const tdteléfono = tr.insertCell(3);
-    const tddirección= tr.insertCell(4);
-    const tdtipo_de_documento = tr.insertCell(5);
-    const tdnúmero_de_documento = tr.insertCell(6);
-
-
-    tdnombre.textContent = data.nombres;
-    tdapellidos.textContent = data.apellidos;
-    tdcorreo_Electrónico.textContent = data.correo;
-    tdteléfono.textContent = data.telefono;
-    tddirección.textContent = data.direccion;
-    tdtipo_de_documento.textContent = data.tipodocumento;
-    tdnúmero_de_documento.textContent = data.documento;
-
-
-
-    tdnombre.textContent = data.nombres;
-    tdapellidos.textContent = data.apellidos;
-    tdcorreo_Electrónico.textContent = data.correo;
-    tdteléfono.textContent = data.telefono;
-    tddirección.textContent = data.direccion;
-    tdtipo_de_documento = documentos.find((doc)=> doc.id === data.type_id).nombre;
-    tdnúmero_de_documento = textContent = data.phone;
-
-    const div = document.createElement("div");
-    const btnEdit = document.createElement("button");
-    const btnDelete = document.createElement
-
-
-
-
-}
-
-const buscar = async(element) => {
-    let data = await enviar(`users/${element.dataset.id}`,{
-        method: 'PATCH',
-        headers: {
-            'Content-type': 'application/json; charset=UTF-8'
-        }
-    });
-    loadform(data);
-};
-
-    
-const save = (event)=>{
-    let response = is_valid(event, "from  [required]");
-    const data={
-        nombres: nombres.value,
-        apellidos:apellidos.value,
-        direccion:direccion.value,
-        tipodocumento:tipodocumento.value,
-        correo:correo.value,
-        telefono:telefono.value,
-        documento:documento.value
-    }
-
-    if(response){
-        if(user.value === ""){
-            guardar(data)
-        }else{
-            actualiza(data)
-        }
-    }
-} 
-const guardar =(data) =>{
-    console.log(data);
-    fetch(`${URL}/users`,{
-        method: `POST`,
+    } else {
+      // Actualizamos los datos
+      data.id = user.value;
+      enviar(`users/${user.value}`, {
+        method: "PUT",
         body: JSON.stringify(data),
-        headers: {
-            'Content-type': 'application/json; charset=UTF-8',
-        },    
-    })
-    .then((response)=> response.json())
-    .then((json)=>{
-        //codigo
-        nombres.value = "";
-        createRow(json)
-    })
-}
-
-const actualiza= async(data)=>{
-    const response = await enviar(`users/${user.value}`,{
-        method: 'PUT',
-        body: JSON. stringify(data),
-        headers: {
-            'Content-type': 'application/json; charset=UTF-8',
-        },
-    });
-
-    //limpiar form
-    nombres.value = " ";
-    apellidos.value = " ";
-    telefono.value = " ";
-    direccion.value = " ";
-    tipodocumento.value = " ";
-    documento.value = " ";
-    correo.value = " ";
-    politicas.checked = false;
-    console.log(response);
-    
-}
-
-
-const limpiarFomr = ()=>{
-    nombres.value = "";
-    apellidos.value = "";
-    telefono.value = "";
-    direccion.value = "";
-    tipodocumento.value = "";
-    documento.value = "";
-    correo.value = "";
-    politicas.checked = false;
-    button.setAttribute("disabled", "");
-
-}
-
-
-const editrow = async (data)=>{
-    const documentos = await solicitud ("documentos");
-    let nombre = documentos.find((documento)=>documento.id === data.type_id).nombres;
-    const tr = document.querySelector(`#user_${data.id}`)
-
-    tr.querySelector(".nombres").textContent = data.nombres;
-    tr.querySelector(".tipo").textContent = nombres;
-
-
-
-
-
-}
-
-const deleteData = (event, element) => {
-    const tr = element.parentNode.parentNode.parentNode;
-    if (confirm("¿Desea eliminar el registro?")) {
-      enviar(`users/${element.dataset.id}`, {
-        method: "DELETE",
         headers: {
           "Content-type": "application/json; charset=UTF-8",
         },
       }).then((data) => {
-        alert(`El usuario ${data.first_name} fue eliminado con éxtio`);
-         tr.remove();
+        resetForm();
+        editRow(data);
+        alert(`Usuario actualizado con éxtio`);
       });
     }
-  };
+  }
+}
 
+const edit = (event, element) => {   
+    enviar(`users/${element.dataset.id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+      },
+    }).then((data) => {
+      // console.log(data);
+      loadForm(data)
+    });
+}
 
-const  loadform = (data)=>{
-    const {
-        id:user_id,
-        nombres : name,
-        apellidos : last_name,
-        telefono : phone,
-        direccion: addres,
-        tipodocumento : type,
-        documento : document,
-        correo : email
-    } = data;
+const deleteData = (event, element) => {
+  const tr = element.parentNode.parentNode.parentNode;
+  if (confirm("¿Desea eliminar el registro?")) {
+    enviar(`users/${element.dataset.id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+      },
+    }).then((data) => {
+      alert(`El usuario ${data.first_name} fue eliminado exitosamente`);
+      tr.remove();
+    });
+  }
+};
 
+const createRow = (data) => {
 
-    user.value = id;
-    nombres.value = name;
-    apellidos.value = last_name;
-    telefono.value = phone;
-    direccion.value = addres;
-    tipodocumento.value = type;
-    documento.value = document;
-    correo.value = email;
-    politicas.value = true;
-    button.removeAttribute("disabled");   
+  const tr = tbody.insertRow(-1);  
+  const tdNombre = tr.insertCell(0);
+  const tdApellido = tr.insertCell(1);
+  const tdTelefono = tr.insertCell(2);
+  const tdDireccion = tr.insertCell(3);
+  const tdTipo = tr.insertCell(4);
+  const tdDocumento = tr.insertCell(5);
+  const tdEmail = tr.insertCell(6);
+  const tdBotonera = tr.insertCell(7);
 
+  tdNombre.classList.add("first_name");
+  tdApellido.classList.add("last_name");;
+  tdTelefono.classList.add("phone");
+  tdDireccion.classList.add("address");
+  tdTipo.classList.add("type_id");
+  tdDocumento.classList.add("docuement");
+  tdEmail.classList.add("email");
+
+  tdNombre.textContent = data.first_name;
+  tdApellido.textContent = data.last_name;
+  tdDireccion.textContent = data.address;
+  tdTipo.textContent = data.type_id;
+  tdEmail.textContent = data.email;
+  tdTelefono.textContent = data.phone;
+  tdDocumento.textContent = data.docuement;
+
+  const div = document.createElement("div");
+  const btnEdit = document.createElement("button");
+  const btnDelete = document.createElement("button");
+  const iconEdit = document.createElement("i");
+  const iconDelete = document.createElement("i");
+
+  div.classList.add("group");
+  btnDelete.classList.add("delete", "button", "button--danger");
+  btnEdit.classList.add("edit", "button");
+  iconEdit.classList.add("bx", "bxs-edit-alt");
+  iconDelete.classList.add("bx", "bxs-trash");
+
+  btnEdit.setAttribute("data-id", data.id);
+  btnDelete.setAttribute("data-id", data.id);
+
+  btnEdit.appendChild(iconEdit);
+  btnDelete.appendChild(iconDelete);
+
+  div.appendChild(btnEdit);
+  div.appendChild(btnDelete);
+
+  tdBotonera.appendChild(div);
+
+  tr.id = `user_${data.id}`; 
+}
+
+const editRow = (data) => {
+  const {
+    id,
+    first_name,
+    last_name,
+    phone,
+    address,
+    type_id,
+    docuement,
+    email,
+  } = data;
+
+  const tr = document.querySelector(`#user_${id}`);  
+  tr.querySelector(".first_name").textContent = first_name;  
+  tr.querySelector(".last_name").textContent = last_name;
+  tr.querySelector(".phone").textContent = phone;
+  tr.querySelector(".address").textContent = address;
+  tr.querySelector(".type_id").textContent = type_id;
+  tr.querySelector(".docuement").textContent = docuement;
+  tr.querySelector(".email").textContent = email;  
+  
+}
+
+const resetForm = () => {
+  nombre.classList.remove("correcto");
+  apellido.classList.remove("correcto");
+  telefono.classList.remove("correcto");
+  direccion.classList.remove("correcto");
+  tipo.classList.remove("correcto");
+  correo.classList.remove("correcto");
+  documento.classList.remove("correcto");
+
+  user.value = "";
+  nombre.value = "";
+  apellido.value = "";
+  direccion.value = "";
+  tipo.selectedIndex = 0;
+  correo.value = "";
+  telefono.value = "";
+  documento.value = "";
+  politicas.checked = false;
+  
+  button.setAttribute("disabled", "");
+}
+
+const loadForm = (data) => {
+  const {id,first_name, last_name, phone, address, type_id, docuement, email } = data;
+  
+  user.value = id;
+  nombre.value = first_name;
+  apellido.value = last_name;
+  telefono.value = phone;
+  direccion.value = address;
+  tipo.value = type_id;
+  documento.value = docuement;
+  correo.value = email;
+  politicas.checked = true;
+  button.removeAttribute("disabled");
+  
 }
 
 
-
-// Manejar el estado del botón de enviar según el checkbox
 addEventListener("DOMContentLoaded", (event) => {
-    listarUsuarios();
-    documentos();
-    if(!politicas.checked) {
-        boton.setAttribute("disabled", "");
-    }
+  documentos();
+  listar();
+  if (!politicas.checked) {
+    button.setAttribute("disabled", "");
+  }
+});
+
+// Delegación de eventos
+document.addEventListener("click", (e) => {
+  let element = "";
+  if (e.target.matches(".edit") || e.target.matches(".edit *")) {
+    element = e.target.matches(".edit") ? e.target : e.target.parentNode;
+    edit(e, element);
+  }
+  if (e.target.matches(".delete") || e.target.matches(".delete *")) {
+    element = e.target.matches(".delete") ? e.target : e.target.parentNode;
+    deleteData(e, element);
+  }
 });
 
 politicas.addEventListener("change", function (e) {
-    if (e.target.checked) {
-        boton.removeAttribute("disabled");
-    } 
+  if (e.target.checked) {
+    button.removeAttribute("disabled")
+  }
 });
-
-// Agrega el evento de submit al formulario
-// document.querySelector("form").addEventListener("submit", validar);
-
-// Validaciones específicas
-
-// Validación del documento
-documento.addEventListener("keypress", SoloNumeros);
-
-// Validación del telefono
-telefono.addEventListener("keypress", SoloNumeros);
 
 $formulario.addEventListener("submit", save);
 
+nombre.addEventListener("blur", (event) => {
+  is_empty(event, nombre);
+})
 
-
-// Validación del nombre 
-nombres.addEventListener("keypress", (event) => {
-    SoloLetras(event, nombres);
+apellido.addEventListener("blur", (event) => {
+  remover(event, apellido)
 });
 
-// Validación del apellido
-apellidos.addEventListener("keypress", (event) => {
-    SoloLetras(event, apellidos);
+telefono.addEventListener("blur", (event) => {
+  cantidad(telefono);
+  is_empty(event, telefono);
 });
 
-// Validación del correo electrónico
 correo.addEventListener("blur", (event) => {
-    isEmail(event, correo);
+  isEmail(event, correo);
 });
 
-
-document.addEventListener("click", (event) => {
-    if(event.target.matches(".modificar")){
-        buscar(event.target);
-    }
+direccion.addEventListener("blur", (event) => {
+  is_empty(event, direccion);
 });
 
+documento.addEventListener("blur", (event) => {
+  is_empty(event, documento);
+});
 
+tipo.addEventListener("change", (event) => {
+  remover(event, tipo);
+})
 
+nombre.addEventListener("keypress", (event) => {
+  remover(event, nombre);
+});
 
+// Cuando pulsamos la tecla
+documento.addEventListener("keypress", is_number);
 
+telefono.addEventListener("keypress", is_number);
 
+nombre.addEventListener("keypress", event => {
+  is_letters(event, nombre)
+});
 
+apellido.addEventListener("keypress", (event) => {
+  is_letters(event, apellido)
+});
 
+// Mientras mantenemos pulsada la tecla
+documento.addEventListener("keydown", function (event) {
+  // console.log("keydown", event);
+});
 
-
-
-
-
-
-
+// Cuando soltamos la tecla
+documento.addEventListener("keyup", function (event) {
+  // console.log("keyup", event);
+});

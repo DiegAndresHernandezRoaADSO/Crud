@@ -1,48 +1,67 @@
-import SoloLetras from "../Crud/module3.js";
-import is_valid from "../Crud/isvalid.js";
-import remover from "../Crud/remover.js";
+import is_letters from "../modules/is_letters.js";
+import is_valid from "../modules/is_valid.js";
 
 const $formulario = document.querySelector("form");
 const nombre = document.querySelector("#nombre");
-const boton = document.querySelector("#boton");
+const button = document.querySelector("button");
 
 
-// Validación del nombre 
-nombre.addEventListener("keypress", (event) => {
-  SoloLetras(event, nombre);
-});
+nombre.addEventListener("keypress", is_letters)
 
 $formulario.addEventListener("submit", (event) => {
-  let response = is_valid(event, "form [required]");
+  let response = is_valid(event, "form  [required]");
   const data = {
-    nombre: nombre.value,
+    name: nombre.value,
   }
   if (response) {
-    boton.setAttribute("disabled", " ");
 
-    fetch('http://localhost:3000/documentos', {
+    button.setAttribute("disabled", "");
+
+    fetch('http://127.0.0.1:3000/documents', {
       method: 'POST',
       body: JSON.stringify(data),
       headers: {
-      'Content-type': 'application/json; charset=UTF-8',
+        'Content-type': 'application/json; charset=UTF-8',
       },
     })
-      
-    .then((response) => response.json())
-    .then((json) => {
-      nombre.value = "";
-      nombre.classList.remove("correcto");
-      boton.removeAttribute("disabled");
-    })
+      .then((response) => response.json())
+      .then((json) => {
+        nombre.value = "";
+        button.removeAttribute("disabled");
+      });
   }
 });
 
-// Se añade un listener para el evento keyup en cada uno de los campos. Cuando se suelta una tecla, se llama a la función remover para verificar el estado del campo.
-[nombre].forEach(input => {
-  input.addEventListener("keyup", () => {
-      remover(input);
-  });
-});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// const data = {
+//   name: nombre.value,
+// }
+
+// if (response) {
+//   fetch('http://localhost:3000/documents', {
+//     method: 'POST',
+//     body: JSON.stringify(data),
+//     headers: {
+//       'Content-type': 'application/json; charset=UTF-8',
+//     },
+//   })
+// }
+// });
 
 
 

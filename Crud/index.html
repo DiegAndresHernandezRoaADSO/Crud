@@ -1,79 +1,99 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FORMULARIO CRUD</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <div class="contenedor_principal layout mt-40 mb-40">
-        <form class="form" novalidate>
-            <input type="hidden" id="user">
-            <label for="nombres">Nombres:</label>
-            <input type="text" id="nombres" autocomplete="off" placeholder="Ingresa tus nombres" required>
-            
-            <label for="apellidos">Apellidos:</label>
-            <input type="text" id="apellidos" autocomplete="off" placeholder="Ingresa tus apellidos" required>
-            
-            <label for="correo">Correo Electrónico:</label>
-            <input type="email" id="correo" autocomplete="off" placeholder="Ingresa tu correo Electrónico" required>
-            
-            <label for="telefono">Teléfono:</label>
-            <input type="tel" id="telefono" autocomplete="off" placeholder="Ingresa tu teléfono" required>
-            
-            <label for="direccion">Dirección:</label>
-            <input type="text" id="direccion" autocomplete="off" placeholder="Ingresa tu dirección" required>
+<html lang="es">
 
-            <label for="tipodocumento">Tipo de documento:</label>
-            <select id="tipodocumento" required>
-            </select>
-            
-            <label for="documento">Número de documento:</label>
-            <input type="text" id="documento" autocomplete="off" placeholder="Ingresa número de documento" required>
-            
-            <div class="button__checkbox">
-                <input type="checkbox" id="politicas" required>
-                <label for="politicas">Acepta las políticas de uso</label>
-            </div>
-            
-            <button id="boton" type="submit">Enviar</button>
-        </form>
-        <div class="grid-container">
-            <table>
-                <thead>
-                    <th>Nombre</th>
-                    <th>Apellido</th>
-                    <th>Correo Electrónico</th>
-                    <th>Teléfono</th>
-                    <th>Dirección</th>
-                    <th>Tipo de documento</th>
-                    <th>Número de documento</th>
-                    <th>Acciones</th>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CRUD</title>
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+
+<body>
+  <div class="container mt-40 mb-40 layout">
+    <!-- Formulario para crear o editar usuarios -->
+    <div class="form">
+      <form class="sticky bg-grey" novalidate>
+        <div class="form__grupo">
+          <label for="nombre">Nombre</label>
+          <input type="text" id="nombre" name="nombre" autocomplete="off" required>
         </div>
-        <template id="template">
-            <tr>
-            <td class="nombre"></td>
-            <td class="apellidos"></td>
-            <td class="correo_Electrónico"></td>
-            <td class="teléfono"></td>
-            <td class="dirección"></td>
-            <td class="tipo_de_documento"></td>
-            <td class="número_de_documento"></td>
-            <td class="Acciones">
-                <button  class="modificar">Modificar</button>
-                <button  class="eliminar">Eliminar</button>
-            </td>
-            </tr>
-        </template>
+        <div class="form__grupo">
+          <label for="apellidos">Apellidos</label>
+          <input type="text" id="apellidos" autocomplete="off" required>
+        </div>
+        <div class="form__grupo">
+          <label for="telefono">Teléfono</label>
+          <input type="text" id="telefono" autocomplete="off" required>
+        </div>
+        <div class="form__grupo">
+          <label for="direccion">Dirección</label>
+          <input type="text" id="direccion" autocomplete="off" required>
+        </div>
+        <div class="form__grupo">
+          <label for="tipo">Tipo Documento</label>
+          <select name="tipo" id="tipo" required></select>
+        </div>
+        <div class="form__grupo">
+          <label for="documento">Documento</label>
+          <input type="text" id="documento" autocomplete="off" required>
+        </div>
+        <div class="form__grupo">
+          <label for="email">Email</label>
+          <input type="email" id="email" autocomplete="off" required>
+        </div>
+        <div class="form__grupo">
+          <input type="checkbox" id="politicas" required><label for="politicas">Acepta las políticas de uso</label>
+        </div>
+        <input type="hidden" id="user_id">
+        <button class="button" type="submit">Enviar</button>
+      </form>
     </div>
 
-    <script src="app.js" type="module"></script>
+    <!-- Tabla para listar usuarios -->
+    <div class="table">
+      <table id="table">
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Apellidos</th>
+            <th>Teléfono</th>
+            <th>Dirección</th>
+            <th>Tipo</th>
+            <th>Documento</th>
+            <th>Email</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Template para listar los usuarios -->
+  <template id="users">
+    <tr>
+      <td class="first_name"></td>
+      <td class="last_name"></td>
+      <td class="phone"></td>
+      <td class="address"></td>
+      <td class="type_id"></td>
+      <td class="document"></td>
+      <td class="email"></td>
+      <td>
+        <div class="group">
+          <button class="edit button">
+            <i class='bx bxs-edit-alt'></i>
+          </button>
+          <button class="delete button button--danger">
+            <i class='bx bxs-trash'></i>
+          </button>
+        </div>
+      </td>
+    </tr>
+  </template>
+
+  <script src="./app.js" type="module"></script>
 </body>
+
 </html>
-
-
