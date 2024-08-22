@@ -4,8 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CRUD</title>
-  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+  <title>mi crud</title>
   <link rel="stylesheet" href="./styles.css">
 </head>
 
@@ -69,6 +68,8 @@
       </table>
     </div>
   </div>
+  
+
 
   <!-- Template para listar los usuarios -->
   <template id="users">
@@ -83,15 +84,22 @@
       <td>
         <div class="group">
           <button class="edit button">
-            <i class='bx bxs-edit-alt'></i>
+            Modificar
           </button>
           <button class="delete button button--danger">
-            <i class='bx bxs-trash'></i>
+            Eliminar
           </button>
         </div>
       </td>
     </tr>
   </template>
+
+  <nav class="navegador">
+    <button class="first">first</button>
+    <button class="prev">prev</button>
+    <button class="next">next</button>
+    <button class="last">last</button>
+  </nav>
 
   <script src="./app.js" type="module"></script>
 </body>

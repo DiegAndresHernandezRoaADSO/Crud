@@ -76,7 +76,7 @@ form {
 
 
 
-input, select, button {
+input, select, button{
   padding: 14px;
   border: solid 1px #ced4da;
   border-radius: 6px;
@@ -90,6 +90,7 @@ input:focus, select:focus {
   border-color: #007bff;
   background-color: #efe9e9;
 }
+
 
 
 
@@ -115,10 +116,7 @@ input:focus, select:focus {
   background-color: #0056b3;
 }
 
-.button--danger {
-  background-color: #dc3545;
-  color: #ffffff;
-}
+
 
 .error {
   border: solid 1px #dc3545;
@@ -285,16 +283,16 @@ input:focus, select:focus {
 }
 
 .button--danger {
-  background-color: #dc3545;
+  background-color: #ff0019;
   color: #ffffff;
 }
 
 .error {
-  border: solid 1px #dc3545;
+  border: solid 2px #ff0019;
 }
 
 .correcto {
-  border: solid 1px #28a745;
+  border: solid 2px #00ff3c;
 }
 
 /* Tabla */

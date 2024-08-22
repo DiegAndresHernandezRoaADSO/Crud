@@ -51,9 +51,40 @@ const documentos = () => {
     });
 }
 
-const listar = async () => {  
+const listar = async (page) => {  
   
-  const data = await solicitud('users');
+  const _page = page ? page :1;
+  const data = await solicitud(`users?_page${_page}=1&_per_page=25`);
+  const documentos = await solicitud("documents");
+
+
+  const nav = document.querySelector(".navegador");
+
+  const first = data.first;
+  const prev = data.prev;
+  const next = data.next;
+  const last = data.last;
+
+
+  // nav.querySelector(".first").setAttribute("disabled"," ");
+  // nav.querySelector(".prev").setAttribute("disabled"," ");
+
+
+  nav.querySelector(".first").setAttribute("data-first",first );
+  nav.querySelector(".prev").setAttribute("data-prev", last);
+  nav.querySelector(".next").setAttribute("data-next",next );
+  nav.querySelector(".last").setAttribute("data-last", last);
+
+  console.log(nav);
+
+
+  
+
+
+
+
+  
+  
 
   data.forEach((element) => {
     $template.querySelector("tr").id = `user_${element.id}`;
@@ -74,7 +105,7 @@ const listar = async () => {
   table.querySelector('tbody').appendChild(fragmento)
 }
 
-const save = (event) => {
+const Guardar = (event) => {
   let ok = is_valid(event, "form  [required]");
   //  Capturar todos los atributos
     const data = {
@@ -114,14 +145,14 @@ const save = (event) => {
         },
       }).then((data) => {
         resetForm();
-        editRow(data);
+        editFila(data);
         alert(`Usuario actualizado con éxtio`);
       });
     }
   }
 }
 
-const edit = (event, element) => {   
+const editar = (event, element) => {   
     enviar(`users/${element.dataset.id}`, {
       method: "PATCH",
       headers: {
@@ -184,9 +215,7 @@ const createRow = (data) => {
 
   div.classList.add("group");
   btnDelete.classList.add("delete", "button", "button--danger");
-  btnEdit.classList.add("edit", "button");
-  iconEdit.classList.add("bx", "bxs-edit-alt");
-  iconDelete.classList.add("bx", "bxs-trash");
+  btnEdit.classList.add("editar", "button");
 
   btnEdit.setAttribute("data-id", data.id);
   btnDelete.setAttribute("data-id", data.id);
@@ -202,7 +231,7 @@ const createRow = (data) => {
   tr.id = `user_${data.id}`; 
 }
 
-const editRow = (data) => {
+const editFila = (data) => {
   const {
     id,
     first_name,
@@ -277,11 +306,46 @@ document.addEventListener("click", (e) => {
   let element = "";
   if (e.target.matches(".edit") || e.target.matches(".edit *")) {
     element = e.target.matches(".edit") ? e.target : e.target.parentNode;
-    edit(e, element);
+    editar(e, element);
   }
   if (e.target.matches(".delete") || e.target.matches(".delete *")) {
     element = e.target.matches(".delete") ? e.target : e.target.parentNode;
     deleteData(e, element);
+  }
+  if(e.target.matches(".first")){
+    const nodos = tbody;
+    const first = e.target.dataset.first;
+    while(nodos.firstChild){
+      nodos.removeChild(nodos.firstChild)
+    }
+    listar(first);
+  }
+  if(e.target.matches(".prev")){
+    const nodos = tbody;
+    const prev = e.target.dataset.prev;
+    while(nodos.firstChild){
+      nodos.removeChild(nodos.firstChild)
+    }
+    listar(prev);
+
+  }
+  if(e.target.matches(".next")){
+    const nodos = tbody;
+    const next = e.target.dataset.next;
+    while(nodos.firstChild){
+      nodos.removeChild(nodos.firstChild)
+    }
+    listar(next);
+
+  }
+  if(e.target.matches(".last")){
+    const nodos = tbody;
+    const last = e.target.dataset.last;
+    while(nodos.firstChild){
+      nodos.removeChild(nodos.firstChild)
+    }
+    listar(last);
+
   }
 });
 
@@ -291,7 +355,7 @@ politicas.addEventListener("change", function (e) {
   }
 });
 
-$formulario.addEventListener("submit", save);
+$formulario.addEventListener("submit", Guardar);
 
 nombre.addEventListener("blur", (event) => {
   is_empty(event, nombre);
